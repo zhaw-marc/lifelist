@@ -49,6 +49,69 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
 ### 3.1 Understand & Define
 - **Zielgruppenverständnis:** _[Problemraumanalyse, Recherche, (Proto-)Personas]_
 - **Wesentliche Erkenntnisse:** _[Stichpunkte]_
+### 3.1 Understand & Define
+
+- **Zielgruppenverständnis:**
+
+  **Problemraumanalyse (Recherche zum Ist-Zustand)**
+
+  | Aspekt | Erkenntnisse |
+  |---|---|
+  | **Benutzer:innen** | Hobby-Vogelbeobachter:innen vom Einsteiger bis Fortgeschrittenen-Niveau; teilweise mit Bezug zu Citizen Science, mehrheitlich aber rein privat motiviert |
+  | **Aufgaben** | Sichtung erfassen (Art, Ort, Zeit, ggf. Notiz/Anzahl); persönliche Life List pflegen; Sichtungen wiederfinden und zurückblicken |
+  | **System (Ist)** | eBird, Merlin, ornitho.ch / NaturaList, Notizbuch, Handy-Notizen-App, Excel |
+  | **Umfeld** | Outdoor-Nutzung (Wald, Park, Wanderung), oft spontan; teils kalte/feuchte Bedingungen; Smartphone als Hauptgerät; nicht immer stabile Internetverbindung |
+  | **Positives (Keep)** | eBird liefert riesige Artendatenbank und globale Reichweite; Merlin's Bestimmungsfunktion ist sehr stark; Life List motiviert nachweislich |
+  | **Frustpunkte** | Profi-Tools wirken überladen; lange Erfassungsformulare; analoge Notizen sind nicht durchsuchbar; keine Auswertung möglich; modernes UI fehlt oft |
+
+  **Proto-Personas**
+  -
+  <div align="left">
+    <img src="docs/assets/persona-lena.png" alt="Lena" width="250">
+  </div>
+  
+  *Persona 1: Lena, die Gelegenheits-Beobachterin*
+
+  - **Persönliche Attribute:** 28 Jahre, Marketing-Mitarbeiterin, geht regelmässig wandern und spazieren, interessiert sich seit ca. einem Jahr für Vögel
+  - **Umfeld:** Smartphone-Nutzung unterwegs, oft im Park oder auf Wochenend-Wanderungen
+  - **Ziele:** Wissen, welche Arten sie schon gesehen hat; Lernfortschritt sehen; Hobby spielerisch ausbauen
+  - **Aufgaben:** Sichtung schnell festhalten; Life List anschauen; ab und zu durch alte Sichtungen scrollen
+  - **Frustpunkte:** eBird wirkt für sie wie ein wissenschaftliches Tool; Notizen-App im Handy ist unstrukturiert; unsicher bei Bestimmung
+  
+  <br/>
+
+  <div align="left">
+    <img src="docs/assets/persona-markus.png" alt="Markus" width="250">
+  </div>
+
+  *Persona 2: Markus, der ambitionierte Hobby-Birder*
+  - **Persönliche Attribute:** 52 Jahre, Lehrer, beobachtet seit 15 Jahren, kennt die meisten Schweizer Brutvögel sicher
+  - **Umfeld:** Plant gezielte Beobachtungs-Touren; nutzt Fernglas und Bestimmungsbücher; offen für digitale Tools
+  - **Ziele:** Persönliches Sichtungs-Archiv über Jahre pflegen; gelegentlich auch wissenschaftlich verwertbare Daten beisteuern
+  - **Aufgaben:** Sichtungen detailliert erfassen (Anzahl, Verhalten, Ort); eigene Statistiken anschauen; Sichtungen exportieren
+  - **Frustpunkte:** ornitho.ch-Bedienung ist unübersichtlich; will nicht für jede Notiz wissenschaftlich-formal protokollieren
+
+  <br/>
+
+    <div align="left">
+      <img src="docs/assets/persona-sarah.png" alt="Sarah" width="250">
+    </div>
+
+  *Persona 3: Sarah, die Naturpädagogin*
+  - **Persönliche Attribute:** 41 Jahre, Primarlehrerin mit Zusatzausbildung Naturpädagogik
+  - **Umfeld:** Schulausflüge, Klassen mit 15–20 Kindern, draussen
+  - **Ziele:** Beobachtungen mit der Klasse gemeinsam dokumentieren und später im Unterricht reflektieren
+  - **Aufgaben:** Schnell und einfach mit Kindern Sichtungen festhalten
+  - **Frustpunkte:** Vorhandene Apps sind für Kinder zu komplex
+
+- **Wesentliche Erkenntnisse:**
+  - Es gibt eine klare Lücke zwischen "Notizbuch" (zu unstrukturiert) und "eBird/ornitho" (zu komplex)
+  - Die Nutzung erfolgt überwiegend mobil und unterwegs – Mobile-First und schnelle Erfassung sind kritisch
+  - Die **Life List** ist ein zentrales Motivations-Element und sollte prominent platziert werden
+  - Citizen-Science-Beitrag ist für einen Teil der Zielgruppe relevant, aber niemals Pflicht – **Opt-In** ist der richtige Weg
+  - Bestimmungs-Unsicherheit ist real – die App muss damit umgehen können (z.B. "unsichere Sichtung" markieren), darf den Workflow aber nicht verlangsamen
+  - Persona 3 (Naturpädagogik) bestätigt den Bedarf nach Einfachheit, ist aber kein primärer Designtreiber – wird im Mindestumfang nicht aktiv adressiert
+  - Annahmen, die in der Validate-Phase überprüft werden müssen: Akzeptiert die Zielgruppe eine vorbefüllte Artenliste? Reichen die Pflichtfelder (Art, Datum, Ort) für unter 30 Sek. Erfassung?
 
 ### 3.2 Sketch
 - **Variantenüberblick:** _[kurz]_
