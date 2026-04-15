@@ -1,4 +1,4 @@
-# Projektdokumentation - [Projekttitel]
+# Projektdokumentation - Lifelist
 
 ## Inhaltsverzeichnis
 
@@ -22,12 +22,20 @@
 <!-- Diese Vorlage ist für eine README.md im Repository gedacht. Abschnitte mit [Optional] können weggelassen werden, wenn in den Übungen nichts anderes verlangt wird. -->
 
 ## 1. Ausgangslage
-Kurz beschreiben, welches Problem adressiert wird und welches Ergebnis angestrebt ist. Wem nützt die Lösung, wer ist beteiligt oder betroffen?
-- **Problem:** _[Das Problem ist identifiziert, verständlich beschrieben und optional mit Beispielen illustriert]_  
-- **Ziele:** _[stichwortartig oder einige Sätze]_  
-- **Primäre Zielgruppe:** _[kurz beschreiben]_  
-- **Weitere Stakeholder [Optional]:** _[z. B. Verwaltung, Geschäftsleitung]_  
 
+Vogelbeobachtung ("Birding") ist ein wachsendes Freizeit-Hobby, das Menschen in die Natur bringt, Achtsamkeit fördert und gleichzeitig wertvolle Daten für den Artenschutz liefern kann. Viele Hobby-Beobachter:innen möchten ihre Sichtungen festhalten – sei es aus persönlichem Interesse (eigene Erfolge sehen, Lernfortschritt verfolgen) oder um zu Citizen-Science-Projekten beizutragen. Bestehende digitale Lösungen sind jedoch entweder zu komplex (Profi-Tools wie eBird oder ornitho.ch mit wissenschaftlichem Anspruch) oder zu rudimentär (Notiz-App, Excel-Liste, Notizbuch).
+
+- **Problem:** Hobby-Vogelbeobachter:innen fehlt ein einfaches, mobiles Werkzeug, um Sichtungen unterwegs schnell festzuhalten und ihre persönlichen Beobachtungserfolge ("Life List") motivierend sichtbar zu machen. Profi-Plattformen schrecken durch Komplexität und wissenschaftliche Pflichtfelder ab; private Notizen sind nicht durchsuchbar und gehen verloren. Beispiel: Wer auf einem Spaziergang spontan einen Eisvogel sieht, möchte das in Sekunden festhalten – nicht erst Distanz, Beobachtungsdauer und Protokolltyp eintragen.
+
+- **Ziele:**
+  - Sichtungen in unter 30 Sekunden mobil erfassen können
+  - Persönliche Life List automatisch aus Sichtungen ableiten und motivierend visualisieren
+  - Niedrige Einstiegshürde für Einsteiger:innen, ohne Funktionsumfang für Fortgeschrittene zu opfern
+  - Optionaler Citizen-Science-Mehrwert (Sichtungen als wissenschaftlich verwertbar markieren)
+
+- **Primäre Zielgruppe:** Hobby-Vogelbeobachter:innen vom Einsteiger bis zur fortgeschrittenen Hobbyebene, die ihre Sichtungen persönlich dokumentieren und ihre Lernfortschritte verfolgen möchten – ohne wissenschaftlichen Protokollzwang.
+
+- **Weitere Stakeholder:** Naturpädagog:innen und Lehrpersonen, die mit Gruppen Beobachtungen sammeln; Citizen-Science-Plattformen (z.B. ornitho.ch, eBird) als potenzielle Empfänger freigegebener Sichtungen.
 
 ## 2. Lösungsidee
 Beschreibt die Lösungsidee.
