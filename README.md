@@ -66,23 +66,40 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
 
   **Proto-Personas**
   -
-  <div align="left">
-    <img src="docs/assets/persona-lena.png" alt="Lena" width="250">
-  </div>
+<table>
+<tr>
+<td width="280">
+<img src="docs/assets/persona-lena.png" alt="Lena" width="250">
+</td>
+<td>
+
+> *"Als Gelegenheits-Beobachterin möchte ich meine Life List auf einen Blick sehen, damit ich meinen Lernfortschritt als Erfolgserlebnis wahrnehme."*
+
+</td>
+</tr>
+</table>
+
   
   *Persona 1: Lena, die Gelegenheits-Beobachterin*
-
   - **Persönliche Attribute:** 28 Jahre, Marketing-Mitarbeiterin, geht regelmässig wandern und spazieren, interessiert sich seit ca. einem Jahr für Vögel
   - **Umfeld:** Smartphone-Nutzung unterwegs, oft im Park oder auf Wochenend-Wanderungen
   - **Ziele:** Wissen, welche Arten sie schon gesehen hat; Lernfortschritt sehen; Hobby spielerisch ausbauen
   - **Aufgaben:** Sichtung schnell festhalten; Life List anschauen; ab und zu durch alte Sichtungen scrollen
   - **Frustpunkte:** eBird wirkt für sie wie ein wissenschaftliches Tool; Notizen-App im Handy ist unstrukturiert; unsicher bei Bestimmung
-  
-  <br/>
+---
 
-  <div align="left">
-    <img src="docs/assets/persona-markus.png" alt="Markus" width="250">
-  </div>
+ <table>
+<tr>
+<td width="280">
+<img src="docs/assets/persona-markus.png" alt="Markus" width="250">
+</td>
+<td>
+
+> *"Als ambitionierter Hobby-Birder möchte ich eine Sichtung nachträglich bearbeiten oder löschen können, damit ich Fehleinträge korrigieren kann."*
+
+</td>
+</tr>
+</table>
 
   *Persona 2: Markus, der ambitionierte Hobby-Birder*
   - **Persönliche Attribute:** 52 Jahre, Lehrer, beobachtet seit 15 Jahren, kennt die meisten Schweizer Brutvögel sicher
@@ -90,12 +107,20 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
   - **Ziele:** Persönliches Sichtungs-Archiv über Jahre pflegen; gelegentlich auch wissenschaftlich verwertbare Daten beisteuern
   - **Aufgaben:** Sichtungen detailliert erfassen (Anzahl, Verhalten, Ort); eigene Statistiken anschauen; Sichtungen exportieren
   - **Frustpunkte:** ornitho.ch-Bedienung ist unübersichtlich; will nicht für jede Notiz wissenschaftlich-formal protokollieren
+---
+ 
+ <table>
+<tr>
+<td width="280">
+<img src="docs/assets/persona-sarah.png" alt="Sarah" width="250">
+</td>
+<td>
 
-  <br/>
+> *"Als Naturpädagogin möchte ich mit meiner Klasse gemeinsam Sichtungen erfassen können, damit wir die Beobachtungen später im Unterricht besprechen können."*
 
-    <div align="left">
-      <img src="docs/assets/persona-sarah.png" alt="Sarah" width="250">
-    </div>
+</td>
+</tr>
+</table>
 
   *Persona 3: Sarah, die Naturpädagogin*
   - **Persönliche Attribute:** 41 Jahre, Primarlehrerin mit Zusatzausbildung Naturpädagogik
