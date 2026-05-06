@@ -1,102 +1,138 @@
 <script lang="ts">
 	import { birds } from '$lib/data/birds';
-	const birdOfTheDay = birds[1]; // Blaumeise for now
+
+	const birdOfTheDay = birds[Math.floor((Date.now() / 86400000)) % birds.length];
 </script>
 
-<div class="home-screen">
-	<h2 class="title">Vogel des Tages</h2>
+<div class="home">
+	<h2 class="section-title">Vogel des Tages</h2>
 
-	<div class="card-container">
-		<div class="bird-card">
-			<img src={birdOfTheDay.image} alt={birdOfTheDay.name} />
-			<div class="card-overlay">
-				<button class="btn-secondary">Entdecken</button>
+	<div class="bird-card">
+		<img src={birdOfTheDay.image} alt={birdOfTheDay.name} class="bird-img" />
+		<div class="card-gradient">
+			<div class="card-meta">
+				<span class="bird-latin">{birdOfTheDay.latinName}</span>
+				<span class="bird-name">{birdOfTheDay.name}</span>
 			</div>
+			<a href="/lifelist" class="discover-btn">Entdecken</a>
 		</div>
 	</div>
 
-	<div class="cta-container">
-		<a href="/capture" class="btn-primary">
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-			Beobachtung erfassen
-		</a>
-	</div>
+	<a href="/capture" class="cta-btn">
+		<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+			<path d="M8 5v14l11-7z" />
+		</svg>
+		Beobachtung erfassen
+	</a>
 </div>
 
 <style>
-	.home-screen {
+	.home {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 2rem;
-		padding-top: 1rem;
+		gap: 1.5rem;
+		padding-top: 0.5rem;
 	}
 
-	.title {
-		font-size: 1.25rem;
-		font-weight: 600;
-	}
-
-	.card-container {
-		width: 100%;
-		display: flex;
-		justify-content: center;
+	.section-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--text-secondary);
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+		font-size: 0.8rem;
 	}
 
 	.bird-card {
-		position: relative;
-		width: 90%;
-		aspect-ratio: 4/3;
-		border-radius: 2rem;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		border-radius: var(--radius-xl);
 		overflow: hidden;
-		box-shadow: var(--shadow);
+		position: relative;
+		box-shadow: var(--shadow-lg);
 	}
 
-	.bird-card img {
+	.bird-img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		display: block;
 	}
 
-	.card-overlay {
+	.card-gradient {
 		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
 		display: flex;
-		justify-content: center;
-		padding-bottom: 1.5rem;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: flex-start;
+		padding: 1.25rem;
+		gap: 0.875rem;
 	}
 
-	.btn-secondary {
-		background: rgba(255, 255, 255, 0.9);
-		border: none;
-		padding: 0.75rem 2rem;
-		border-radius: 999px;
-		font-weight: 600;
-		color: var(--text-primary);
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-		cursor: pointer;
-	}
-
-	.cta-container {
-		width: 100%;
+	.card-meta {
 		display: flex;
-		justify-content: center;
-		margin-top: 2rem;
+		flex-direction: column;
+		gap: 0.125rem;
 	}
 
-	.btn-primary {
-		background-color: #3b82f6;
+	.bird-latin {
+		font-size: 0.75rem;
+		color: rgba(255, 255, 255, 0.7);
+		font-style: italic;
+		font-weight: 500;
+	}
+
+	.bird-name {
+		font-size: 1.6rem;
+		font-weight: 800;
 		color: white;
+		line-height: 1.1;
+		letter-spacing: -0.02em;
+	}
+
+	.discover-btn {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		color: var(--text-primary);
 		border: none;
-		padding: 1rem 2rem;
+		padding: 0.5rem 1.25rem;
 		border-radius: 999px;
-		font-weight: 600;
+		font-weight: 700;
+		font-size: 0.875rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		transition: background 0.15s, transform 0.15s;
+	}
+
+	.discover-btn:hover {
+		background: white;
+		transform: scale(1.02);
+	}
+
+	.cta-btn {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		box-shadow: 0 4px 10px rgba(59, 130, 246, 0.5);
-		text-decoration: none;
+		background: var(--primary);
+		color: white;
+		padding: 1rem 2rem;
+		border-radius: 999px;
+		font-size: 1rem;
+		font-weight: 700;
+		box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+		transition: transform 0.15s, box-shadow 0.15s;
+		margin-top: 0.5rem;
+	}
+
+	.cta-btn:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+	}
+
+	.cta-btn:active {
+		transform: translateY(0);
 	}
 </style>

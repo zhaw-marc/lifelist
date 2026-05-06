@@ -11,7 +11,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"seed:species": "node --env-file=.env scripts/seed-species.mjs",
-		"enrich:images": "node --env-file=.env scripts/enrich-images.mjs"
+		"enrich:images": "node --env-file=.env scripts/enrich-images.mjs",
+		"download:images": "node --env-file=.env scripts/download-images.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.1",

@@ -1,38 +1,69 @@
 :root {
-  --primary-color: #3b82f6;
-  --bg-color: #f9fafb;
-  --card-bg: #ffffff;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --border-color: #e5e7eb;
-  --nav-bg: #ffffff;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	--primary: #2563eb;
+	--primary-light: #eff6ff;
+	--primary-dark: #1d4ed8;
+	--accent-red: #ef4444;
+	--accent-green: #16a34a;
+	--bg: #f2f2f7;
+	--card-bg: #ffffff;
+	--text-primary: #1c1c1e;
+	--text-secondary: #8e8e93;
+	--border: #e5e5ea;
+	--nav-active-bg: #e8e8ed;
+	--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+	--shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+	--shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08);
+	--radius-sm: 0.5rem;
+	--radius: 0.875rem;
+	--radius-lg: 1.25rem;
+	--radius-xl: 1.75rem;
+	--font: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-  font-family: var(--font-family);
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+	font-family: var(--font);
+	background-color: var(--bg);
+	color: var(--text-primary);
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 768px) {
+	body {
+		background:
+			radial-gradient(ellipse at 20% 50%, rgba(34, 85, 54, 0.6) 0%, transparent 60%),
+			radial-gradient(ellipse at 80% 20%, rgba(20, 60, 40, 0.4) 0%, transparent 50%),
+			linear-gradient(145deg, #1a3428 0%, #243d2e 50%, #182a20 100%);
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 button {
-  font-family: inherit;
+	font-family: inherit;
+	cursor: pointer;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+	text-decoration: none;
+	color: inherit;
 }
 
 ul {
-  list-style: none;
+	list-style: none;
+}
+
+input,
+textarea,
+select {
+	font-family: inherit;
 }
