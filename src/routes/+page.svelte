@@ -14,7 +14,7 @@
 				<span class="bird-latin">{birdOfTheDay.latinName}</span>
 				<span class="bird-name">{birdOfTheDay.name}</span>
 			</div>
-			<a href="/lifelist" class="discover-btn">Entdecken</a>
+			<a href="/birds/{birdOfTheDay.id}" class="discover-btn">Entdecken</a>
 		</div>
 	</div>
 
