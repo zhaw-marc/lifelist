@@ -5,11 +5,15 @@
 
 <div class="detail">
 	<div class="hero">
-		<button class="hero-img-btn" onclick={() => (lightboxOpen = true)} aria-label="Bild vergrössern">
-			<img src={data.bird.image} alt={data.bird.name} class="hero-img" />
-		</button>
+		{#if data.bird.image}
+			<button class="hero-img-btn" onclick={() => (lightboxOpen = true)} aria-label="Bild vergrössern">
+				<img src={data.bird.image} alt={data.bird.name} class="hero-img" />
+			</button>
+		{:else}
+			<div class="hero-placeholder"></div>
+		{/if}
 		<div class="hero-gradient">
-			<a href="/" class="back-btn" aria-label="Zurück">
+			<a href="/uebersicht" class="back-btn" aria-label="Zurück">
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 					<path d="m15 18-6-6 6-6" />
 				</svg>
@@ -49,11 +53,6 @@
 			<h2 class="section-title">Über diese Art</h2>
 			<p class="extract">{data.wiki.extract}</p>
 		</div>
-	{:else if data.bird.description}
-		<div class="section">
-			<h2 class="section-title">Über diese Art</h2>
-			<p class="extract">{data.bird.description}</p>
-		</div>
 	{/if}
 
 	<a href="/capture" class="cta-btn">
@@ -64,7 +63,7 @@
 	</a>
 </div>
 
-{#if lightboxOpen}
+{#if lightboxOpen && data.bird.image}
 	<div
 		class="lightbox"
 		role="dialog"
@@ -98,7 +97,6 @@
 		margin: -1rem -1rem 0;
 	}
 
-	/* Hero */
 	.hero {
 		position: relative;
 		width: 100%;
@@ -120,6 +118,12 @@
 		height: 100%;
 		object-fit: cover;
 		display: block;
+	}
+
+	.hero-placeholder {
+		width: 100%;
+		height: 100%;
+		background: var(--border);
 	}
 
 	/* Lightbox */
@@ -222,7 +226,6 @@
 		font-weight: 500;
 	}
 
-	/* Info chips */
 	.info-chips {
 		display: flex;
 		gap: 0.75rem;
@@ -264,7 +267,6 @@
 		font-style: italic;
 	}
 
-	/* Text section */
 	.section {
 		padding: 0 1rem;
 		display: flex;
@@ -286,7 +288,6 @@
 		font-weight: 500;
 	}
 
-	/* CTA */
 	.cta-btn {
 		display: flex;
 		align-items: center;
