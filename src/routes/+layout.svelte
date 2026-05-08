@@ -3,20 +3,24 @@
 	import Header from '$lib/components/Header.svelte';
 	import BottomNav from '$lib/components/BottomNav.svelte';
 
-	let { children } = $props();
+	let { data, children } = $props();
 </script>
 
 <svelte:head>
 	<title>LifeList</title>
 </svelte:head>
 
-<div class="app-shell">
-	<Header />
-	<main class="main-content">
-		{@render children()}
-	</main>
-	<BottomNav />
-</div>
+{#if data.user}
+	<div class="app-shell">
+		<Header user={data.user} />
+		<main class="main-content">
+			{@render children()}
+		</main>
+		<BottomNav />
+	</div>
+{:else}
+	{@render children()}
+{/if}
 
 <style>
 	.app-shell {

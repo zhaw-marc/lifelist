@@ -1,10 +1,12 @@
 import { observations, species } from '$lib/db/mongo';
 import { birds as staticBirds } from '$lib/data/birds';
+import { ObjectId } from 'mongodb';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const userId = new ObjectId(locals.user!.id);
 	const obs = await observations
-		.find({})
+		.find({ userId })
 		.sort({ date: -1, time: -1 })
 		.toArray();
 

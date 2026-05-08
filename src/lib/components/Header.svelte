@@ -1,3 +1,7 @@
+<script lang="ts">
+	let { user }: { user: { id: string; username: string } } = $props();
+</script>
+
 <header class="header">
 	<div class="logo">
 		<div class="logo-mark">
@@ -8,13 +12,12 @@
 		</div>
 		<span class="logo-text"><strong>Life</strong>List</span>
 	</div>
-	<button class="help-btn" aria-label="Hilfe">
-		<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-			<circle cx="12" cy="12" r="10" />
-			<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-			<circle cx="12" cy="17" r="0.5" fill="currentColor" />
+	<div class="user-badge">
+		<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+			<circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
 		</svg>
-	</button>
+		<span>{user.username}</span>
+	</div>
 </header>
 
 <style>
@@ -56,19 +59,16 @@
 		color: var(--primary);
 	}
 
-	.help-btn {
-		background: none;
-		border: none;
-		color: var(--text-secondary);
-		padding: 0.375rem;
+	.user-badge {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		border-radius: 50%;
-		transition: background 0.15s;
-	}
-
-	.help-btn:hover {
-		background: var(--border);
+		gap: 0.375rem;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: var(--text-secondary);
+		background: var(--bg);
+		border: 1.5px solid var(--border);
+		border-radius: 999px;
+		padding: 0.375rem 0.75rem;
 	}
 </style>

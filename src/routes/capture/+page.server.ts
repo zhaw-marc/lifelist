@@ -1,15 +1,17 @@
 import { observations, species } from '$lib/db/mongo';
 import { birds as staticBirds } from '$lib/data/birds';
 import { fail } from '@sveltejs/kit';
+import { ObjectId } from 'mongodb';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const userId = new ObjectId(locals.user!.id);
 	const [speciesList, observedCodes] = await Promise.all([
 		species
 			.find({}, { projection: { _id: 0, speciesCode: 1, name: 1, latinName: 1, image: 1 } })
 			.sort({ name: 1 })
 			.toArray(),
-		observations.distinct('birdId')
+		observations.distinct('birdId', { userId })
 	]);
 
 	// Fall back to static birds if the species collection hasn't been seeded yet
@@ -30,7 +32,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	save: async ({ request }) => {
+	save: async ({ request, locals }) => {
 		const data = await request.formData();
 		const birdId = data.get('birdId') as string;
 		const lat = parseFloat(data.get('lat') as string);
@@ -43,12 +45,14 @@ export const actions: Actions = {
 			return fail(400, { message: 'Bitte alle Pflichtfelder ausfüllen.' });
 		}
 
-		const existingCount = await observations.countDocuments({ birdId });
+		const userId = new ObjectId(locals.user!.id);
+		const existingCount = await observations.countDocuments({ birdId, userId });
 		const isNewLifer = existingCount === 0;
 
 		try {
 			await observations.insertOne({
 				birdId,
+				userId,
 				location: { lat, lng },
 				date,
 				time,

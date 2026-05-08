@@ -8,3 +8,5 @@ const client = new MongoClient(uri);
 export const db = client.db(dbName);
 export const observations = db.collection('observations');
 export const species = db.collection('species');
+export const users = db.collection('users');
+export const sessions = db.collection('sessions');

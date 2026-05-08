@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
+	import { enhance } from '$app/forms';
 
 	let { data } = $props();
 	const stats = $derived(data.stats);
@@ -196,6 +197,21 @@
 					<path d="m9 18 6-6-6-6" />
 				</svg>
 			</a>
+		</div>
+	</section>
+
+	<!-- Account -->
+	<section class="section">
+		<h2 class="section-label">Konto</h2>
+		<div class="card">
+			<form method="POST" action="?/logout" use:enhance>
+				<button type="submit" class="logout-btn">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+						<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+					</svg>
+					Abmelden
+				</button>
+			</form>
 		</div>
 	</section>
 </div>
@@ -466,6 +482,26 @@
 		font-size: 0.75rem;
 		color: var(--text-secondary);
 		font-weight: 500;
+	}
+
+	/* Logout */
+	.logout-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		width: 100%;
+		padding: 1rem;
+		background: none;
+		border: none;
+		font-size: 0.9375rem;
+		font-weight: 700;
+		color: var(--accent-red);
+		transition: background 0.1s;
+		text-align: left;
+	}
+
+	.logout-btn:hover {
+		background: #fef2f2;
 	}
 
 	/* Spinner */

@@ -1,9 +1,11 @@
 import { observations, species } from '$lib/db/mongo';
 import { birds as staticBirds } from '$lib/data/birds';
+import { ObjectId } from 'mongodb';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async () => {
-	const obs = await observations.find({}).sort({ date: -1, time: -1 }).toArray();
+export const GET: RequestHandler = async ({ locals }) => {
+	const userId = new ObjectId(locals.user!.id);
+	const obs = await observations.find({ userId }).sort({ date: -1, time: -1 }).toArray();
 
 	const birdIds = [...new Set(obs.map((o) => o.birdId as string))];
 	const speciesList = await species.find({ speciesCode: { $in: birdIds } }).toArray();
