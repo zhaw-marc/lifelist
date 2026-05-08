@@ -38,10 +38,23 @@ Vogelbeobachtung ("Birding") ist ein wachsendes Freizeit-Hobby, das Menschen in 
 - **Weitere Stakeholder:** Naturpädagog:innen und Lehrpersonen, die mit Gruppen Beobachtungen sammeln; Citizen-Science-Plattformen (z.B. ornitho.ch, eBird) als potenzielle Empfänger freigegebener Sichtungen.
 
 ## 2. Lösungsidee
-Beschreibt die Lösungsidee.
-- **Kernfunktionalität:** _[Workflows kurz nennen und optional illustrieren]_  
-- **Annahmen [Optional]:** _[welche Hypothesen werden geprüft?]_
-- **Abgrenzung [Optional]:** _[Was gehört explizit nicht zum Umfang?]_
+
+Lifelist füllt die Lücke zwischen "Notizbuch" und "eBird": eine **persönliche Birding-Journal-App mit Life-List-Funktion**, die Spass macht und unterwegs in Sekunden funktioniert – ohne wissenschaftlichen Anspruch an die Nutzer, aber mit optionalem wissenschaftlichem Mehrwert.
+
+- **Kernfunktionalität:**
+  - **Workflow 1 – Neue Beobachtung erfassen:** Art aus vorbereiteter Liste wählen, Ort/Datum/Foto ergänzen, speichern. Bei erster Sichtung einer Art erscheint ein "Neuer Lifer!"-Screen.
+  - **Workflow 2 – Sichtung anzeigen & bearbeiten:** Life List → Art-Detail-Screen → Sichtung bearbeiten oder zwischen mehreren Sichtungen swipen.
+  - **Workflow 3 – Navigation:** Drei Hauptbereiche (Erfassen/Home, Life List, Einstellungen) über fixe Bottom Navigation erreichbar.
+
+- **Annahmen:**
+  - Nutzer:innen akzeptieren eine vorbefüllte Artenliste (559 Schweizer Arten aus eBird) statt freier Texteingabe.
+  - Die drei Pflichtfelder (Art, Datum, Ort) ermöglichen Erfassung in unter 30 Sekunden.
+  - Die "Neuer Lifer!"-Mechanik (Pokédex-Logik) erhöht die Nutzungsmotivation nachweislich.
+
+- **Abgrenzung:**
+  - Keine Echtzeit-Artbestimmung via Foto oder Ton (kein Merlin-Klon).
+  - Kein automatischer Export zu Citizen-Science-Plattformen (eBird, ornitho.ch) im Mindestumfang.
+  - Keine Mehrbenutzer-/Gruppenerfassung (Persona 3 nicht im Scope des Prototyps).
 
 ## 3. Vorgehen & Artefakte
 Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergebnisse je Phase.
@@ -139,22 +152,62 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
   - Annahmen, die in der Validate-Phase überprüft werden müssen: Akzeptiert die Zielgruppe eine vorbefüllte Artenliste? Reichen die Pflichtfelder (Art, Datum, Ort) für unter 30 Sek. Erfassung?
 
 ### 3.2 Sketch
-- **Variantenüberblick:** _[kurz]_
-- **Skizzen:** _[Mehrere Varianten; Unterschiede kurz dokumentieren.]_
+
+- **Variantenüberblick:** 8 Varianten der Life-List-Seite wurden skizziert, davon eine mit integrierter Karte, eine mit Aufteilung nach Vogelfamilien, und zwei mit Portrait-Karten-Ansicht (Nr. 7 & 8).
+
+- **Skizzen:**
+
+  ![Skizzen Seite 1 – 8 Varianten der Life List](docs/assets/sketches/sketch_p1.png)
+  *Seite 1: 8 Varianten der Life-List-Seite. Nr. 1–2: einfache Listen mit Zählern; Nr. 3–4: Kategorie-Checkboxen; Nr. 5: Karten-Ansicht; Nr. 6: Aufteilung nach Familien; Nr. 7–8: Portrait-Karten mit Liste.*
+
+  ![Skizzen Seite 2 – Detailskizzen des gewählten Hybrids](docs/assets/sketches/sketch_p2.png)
+  *Seite 2: Detailskizzen des gewählten Hybrid-Konzepts (Nr. 7 + 8) mit Übersichtsseite, Erfassungsflow (Schritte 1–4) und Art-Detail-Screen.*
+
+- **Feedback & Reflexion:**
+  - Beschreibung der Page fehlte in frühen Varianten – nicht Beginner-friendly.
+  - Integrierte Karte wurde positiv bewertet.
+  - Nr. 6 (Aufteilung nach Familien) als unübersichtlich eingestuft.
+  - Nr. 7 + 8 als am ansprechendsten bewertet.
+  - Entscheid: **Hybrid aus Nr. 7 + 8** – Karte mit Liste und Vogel-Portraits. Das Feedback half, die Perspektive von Einsteiger:innen einzufangen und einen blinden Fleck zu vermeiden.
 
 ### 3.3 Decide
-- **Gewählte Variante & Begründung:** _[Entscheidkriterien nennen]_  
-- **End-to-End-Ablauf:** _[Beschreibung inkl. User Journey Map]_  
-- **Mockup:** _[URL, z. B. Figma; Screenshots mit kurzen Beschreibungen]_  
+
+- **Gewählte Variante & Begründung:** Hybrid aus Sketch-Varianten 7 + 8: Übersichtsseite mit Vogel-Portrait-Karten und integrierter Karte. Entscheidkriterien: intuitive Interaktion, Beginner-freundlichkeit, klare Seitenbeschreibung, positive Nutzung der Karte.
+
+- **End-to-End-Ablauf:**
+
+  ![Workflow 1 – Neue Beobachtung erfassen](docs/assets/sketches/mockup_p1.png)
+  *Workflow 1 (Happy Path): Home → Neue Beobachtung → Art wählen → Metadaten (Ort, Datum, Foto) → Speichern → "Neuer Lifer!" oder Bestätigung → Life List.*
+
+  ![Workflow 2 & 3 – Sichtung bearbeiten und Navigation](docs/assets/sketches/mockup_p2.png)
+  *Workflow 2: Life List → Art-Detail → Swipen zwischen Sichtungen / Bearbeiten → Formular → Speichern. Workflow 3: Bottom Navigation zwischen Erfassen, Life List und Einstellungen.*
+
+- **Mockup:** [Figma-Prototyp (interaktiv)](https://www.figma.com/proto/ABKnLl17kd1sW1dbhDw0aM/U10?node-id=0-1&t=PigQqPpqyoBD0PGR-1)
 
 ### 3.4 Prototype
 
 #### 3.4.1. Entwurf (Design)
 Beschreibt die Gestaltung und Interaktion.
 > **Hinweis:** Hier wird der **Prototyp** beschrieben, nicht das **Mockup**.
-- **Informationsarchitektur:** _[z. B. Seiten/Navigation: Konzept, nicht die technische Umsetzung]_
-- **User Interface Design:** _[wichtige Screens: Screenshots mit kurzen Erläuterungen]_  
-- **Designentscheidungen:** _[zentrale Entscheidungen und Begründungen]_
+
+- **Informationsarchitektur:** Drei Hauptbereiche über fixe Bottom Navigation: **Home/Erfassen** (Vogel des Tages + Erfassungs-CTA), **Life List** (Übersicht aller Beobachtungen als Portrait-Karten), **Einstellungen**. Detailseiten (Art-Detail, Erfassungsformular) sind als modale Ebenen über die Navigation erreichbar.
+
+- **User Interface Design:** Mobile-First, 430 px Telefonschale auf Desktop (zentriert auf dunkelgrünem Hintergrund). Primärfarbe Dunkelgrün (`--primary: #1a5c38`), helle Karten, Nunito als Schrift. Bottom Navigation fix auf Mobile, relativ innerhalb der Shell auf Desktop.
+
+- **Designentscheidungen:**
+
+  ![Designentscheide aus dem Mockup](docs/assets/sketches/mockup_p3.png)
+
+  | Entscheid | Begründung |
+  |---|---|
+  | **Mobile-First** | Vogelbeobachtung findet draussen statt – Smartphone ist das einzige verfügbare Gerät |
+  | **Bottom Navigation mit 3 Tabs** | Etabliertes Mobile-Pattern, erlaubt Einhand-Bedienung; "Erfassen" bewusst als erster Tab |
+  | **"Vogel des Tages" auf Homescreen** | Informativer Charakter; motiviert App-Öffnung auch ohne Erfassungsanlass |
+  | **Art-Auswahl mit Suchfeld + Autocomplete** | 559 Arten – reines Dropdown nicht praktikabel; zeigt deutschen + wissenschaftlichen Namen |
+  | **Swipe-Navigation für Sichtungen derselben Art** | Vermeidet Listen-in-Listen; fühlt sich auf Mobile natürlich an |
+  | **"Neuer Lifer!"-Screen** | Erzeugt Erfolgserlebnis bei Ertstsichtung (Pokédex-Logik / Sammler-Motivation) |
+  | **Minimale Pflichtfelder** | Nur Artauswahl zwingend; Datum wird vorausgefüllt; Ort/Foto optional → unter 30 Sek. |
+  | **Bearbeitungsformular = Erfassungsformular** | Kein neues UI-Pattern zu lernen; vorausgefüllte Felder statt leeres Formular |
 
 #### 3.4.2. Umsetzung (Technik)
 Fasst die technische Realisierung zusammen.
