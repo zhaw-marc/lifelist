@@ -65,8 +65,11 @@
 		await import('leaflet/dist/leaflet.css');
 		leafletLib = L;
 
-		// Set a default location immediately so the map can show right away
-		captureState.location = { lat: 47.3769, lng: 8.5417 };
+		// Use saved home location if available, otherwise fall back to Zurich
+		const savedSettings = JSON.parse(localStorage.getItem('lifelist_settings') || '{}');
+		const defaultLat = savedSettings.homeLocation?.lat ?? 47.3769;
+		const defaultLng = savedSettings.homeLocation?.lng ?? 8.5417;
+		captureState.location = { lat: defaultLat, lng: defaultLng };
 
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
