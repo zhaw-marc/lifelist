@@ -162,7 +162,37 @@ Fasst die technische Realisierung zusammen.
 - **Tooling:** _[IDE/Erweiterungen, lokale/Cloud-Tools; den Einsatz von KI beschreiben Sie im Kapitel **KI-Deklaration**]_  
 - **Struktur & Komponenten:** _[Seiten, Routen, State/Stores, wichtige Komponenten]_
 - **Daten & Schnittstellen:** _[Wie werden Daten gespeichert, verwaltet, abgerufen?]_
-- **Deployment:** _[URL]_  
+- **Deployment:** Die App ist öffentlich erreichbar unter **https://lifelist.tail952aaf.ts.net**
+
+  Die Infrastruktur läuft auf einem selbst gehosteten Proxmox-Server (Heimserver). Darauf betreibt eine Ubuntu-VM einen Docker-Host. Die Anwendung besteht aus zwei Docker-Containern, die via `docker compose` verwaltet werden:
+
+  - **`lifelist-app`** – SvelteKit-App, gebaut mit einem mehrstufigen Dockerfile (Node 22 Alpine, Build-Stage + schlanke Runtime-Stage), lauscht auf Port 3000.
+  - **`lifelist-tailscale`** – Tailscale-Sidecar, teilt den Netzwerk-Namespace mit dem App-Container (`network_mode: service:tailscale`). Über Tailscale Funnel wird der App-Port via HTTPS (Port 443, TLS automatisch durch Tailscale) öffentlich zugänglich gemacht. Die MongoDB läuft extern und wird per `MONGODB_URI`-Umgebungsvariable eingebunden.
+
+  ```mermaid
+  graph TD
+      Browser["Browser / User"]
+      Internet["Internet"]
+      Funnel["Tailscale Funnel\n(HTTPS :443)"]
+      TailscaleC["Container: lifelist-tailscale\nTailscale Sidecar"]
+      AppC["Container: lifelist-app\nSvelteKit :3000"]
+      MongoDB[("MongoDB\nexternal")]
+      DockerHost["Docker Host\nUbuntu VM"]
+      Proxmox["Proxmox\nHeim-Server"]
+
+      Browser -->|HTTPS| Internet
+      Internet --> Funnel
+      Funnel --> TailscaleC
+      TailscaleC -->|"Proxy http://127.0.0.1:3000\n(shared network namespace)"| AppC
+      AppC -->|MONGODB_URI| MongoDB
+
+      subgraph Proxmox
+          subgraph DockerHost
+              TailscaleC
+              AppC
+          end
+      end
+  ```
 - **Besondere Entscheidungen:** _[z. B. Trade-offs, Vereinfachungen]_  
 
 ### 3.5 Validate
