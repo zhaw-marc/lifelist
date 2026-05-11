@@ -58,7 +58,7 @@
 	{:else}
 		<div class="entries">
 			{#each filtered as entry (entry.id)}
-				<a href="/lifelist/{entry.id}" class="entry-row">
+				<a href="/uebersicht/{entry.birdId}" class="entry-row">
 					<div class="entry-thumb">
 						{#if entry.species?.image}
 							<img src={entry.species.image} alt={entry.species.name} />
