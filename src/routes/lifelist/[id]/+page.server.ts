@@ -4,6 +4,27 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { ObjectId } from 'mongodb';
 import type { Actions, PageServerLoad } from './$types';
 
+async function fetchWikiSummary(latinName: string) {
+	const title = latinName.replaceAll(' ', '_');
+	try {
+		const res = await fetch(
+			`https://de.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`,
+			{
+				headers: { 'User-Agent': 'LifeList/1.0 (bird journal app)' },
+				signal: AbortSignal.timeout(5000)
+			}
+		);
+		if (!res.ok) return null;
+		const data = await res.json();
+		return {
+			description: (data.description as string) ?? null,
+			extract: (data.extract as string) ?? null
+		};
+	} catch {
+		return null;
+	}
+}
+
 export const load: PageServerLoad = async ({ params, locals }) => {
 	let oid: ObjectId;
 	try {
@@ -19,6 +40,28 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const fromDb = await species.findOne({ speciesCode: obs.birdId as string });
 	const fromStatic = staticBirds.find((b) => b.id === (obs.birdId as string));
 
+	const speciesInfo = fromDb
+		? {
+				name: fromDb.name as string,
+				latinName: fromDb.latinName as string,
+				image: (fromDb.image as string) ?? null,
+				order: (fromDb.order as string) ?? null,
+				familyComName: (fromDb.familyComName as string) ?? null,
+				familySciName: (fromDb.familySciName as string) ?? null
+			}
+		: fromStatic
+			? {
+					name: fromStatic.name,
+					latinName: fromStatic.latinName,
+					image: fromStatic.image ?? null,
+					order: null,
+					familyComName: null,
+					familySciName: null
+				}
+			: null;
+
+	const wiki = speciesInfo ? await fetchWikiSummary(speciesInfo.latinName) : null;
+
 	return {
 		entry: {
 			id: obs._id.toString(),
@@ -27,12 +70,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			time: obs.time as string,
 			notes: (obs.notes as string) ?? '',
 			location: (obs.location as { lat: number; lng: number } | null) ?? null,
-			species: fromDb
-				? { name: fromDb.name as string, latinName: fromDb.latinName as string, image: (fromDb.image as string) ?? null }
-				: fromStatic
-					? { name: fromStatic.name, latinName: fromStatic.latinName, image: fromStatic.image }
-					: null
-		}
+			species: speciesInfo
+		},
+		wiki
 	};
 };
 
