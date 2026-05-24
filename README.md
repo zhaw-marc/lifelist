@@ -208,10 +208,62 @@ Beschreibt die Gestaltung und Interaktion.
 
 #### 3.4.2. Umsetzung (Technik)
 Fasst die technische Realisierung zusammen.
-- **Technologie-Stack:** _[SvelteKit, Bibliotheken falls genutzt]_
-- **Tooling:** _[IDE/Erweiterungen, lokale/Cloud-Tools; den Einsatz von KI beschreiben Sie im Kapitel **KI-Deklaration**]_  
-- **Struktur & Komponenten:** _[Seiten, Routen, State/Stores, wichtige Komponenten]_
-- **Daten & Schnittstellen:** _[Wie werden Daten gespeichert, verwaltet, abgerufen?]_
+
+- **Technologie-Stack:**
+
+  | Bereich | Technologie / Bibliothek |
+  |---|---|
+  | Framework | SvelteKit 2, Svelte 5 (Runes-Modus) |
+  | Sprache | TypeScript (strict) |
+  | Styling | Vanilla CSS mit Custom Properties (kein Framework) |
+  | Datenbank | MongoDB (offizielle Node.js-Treiber, `mongodb` npm-Paket) |
+  | Karte | Leaflet (dynamisch importiert, nur client-side) |
+  | Auth | bcryptjs (Passwort-Hashing), Session-Cookie |
+  | Laufzeit | Node.js 22 (Alpine Docker-Image) |
+
+- **Tooling:**
+  - **IDE:** Visual Studio Code
+  - **KI-Unterstützung:** Claude Code (Anthropic) — Details in Kap. 6 (KI-Deklaration)
+  - **Design:** Figma (Mockup, interaktiver Prototyp)
+  - **Deployment:** Docker Compose, Tailscale Funnel (siehe Deployment-Abschnitt)
+  - **Skripte:** Node.js ES-Module-Skripte (`scripts/`) für einmalige Datenmigration
+
+- **Struktur & Komponenten:**
+
+  ```
+  src/
+  ├── app.css                  # Alle CSS Custom Properties (Design Tokens)
+  ├── hooks.server.ts          # Auth-Guard: Session prüfen, User in locals setzen
+  ├── lib/
+  │   ├── components/
+  │   │   ├── Header.svelte    # App-Header mit Titel und Username
+  │   │   └── BottomNav.svelte # Fixe Bottom Navigation (3 Tabs)
+  │   ├── data/birds.ts        # 5 statische Beispiel-Vögel (Legacy, Capture-Flow)
+  │   ├── db/mongo.ts          # MongoDB-Collections: observations, species, users, sessions
+  │   ├── server/auth.ts       # createUser, login, Session-Management (bcryptjs)
+  │   └── state.svelte.ts      # captureState (globaler $state, persistiert über Steps)
+  └── routes/
+      ├── +layout.svelte       # Root-Layout: Header + BottomNav wrapper
+      ├── +page.svelte         # Home: Vogel des Tages
+      ├── login/               # Login & Registrierung
+      ├── capture/             # 3-Schritt Erfassungsflow
+      ├── lifelist/            # Chronologische Sichtungsliste
+      ├── lifelist/[id]/       # Sichtungs-Detail: anzeigen, bearbeiten, löschen
+      ├── birds/[id]/          # Art-Detail (statische birds.ts)
+      ├── uebersicht/          # Alle 559 CH-Arten, durchsuchbar
+      ├── uebersicht/[code]/   # Art-Detail aus MongoDB species-Collection
+      ├── settings/            # Statistiken + Logout
+      └── api/export/          # GET → CSV-Download aller Beobachtungen
+  ```
+
+- **Daten & Schnittstellen:**
+  - **MongoDB** (4 Collections):
+    - `species` — 559 Schweizer Vogelarten, befüllt via eBird-API-Seed-Skript
+    - `observations` — Benutzer-Sichtungen (birdId, location, date, time, notes, userId)
+    - `users` — Benutzername + bcrypt-Passwort-Hash
+    - `sessions` — Session-Token mit Ablaufdatum (30 Tage)
+  - **Wikipedia REST API** (`de.wikipedia.org/api/rest_v1/page/summary/{latinName}`) — server-side, 5s Timeout, silent fail
+  - **eBird API** — nur einmalig beim Seeden (`scripts/seed-species.mjs`), nicht zur Laufzeit
 - **Deployment:** Die App ist öffentlich erreichbar unter **https://lifelist.tail952aaf.ts.net**
 
   Die Infrastruktur läuft auf einem selbst gehosteten Proxmox-Server (Heimserver). Darauf betreibt eine Ubuntu-VM einen Docker-Host. Die Anwendung besteht aus zwei Docker-Containern, die via `docker compose` verwaltet werden:
@@ -243,7 +295,11 @@ Fasst die technische Realisierung zusammen.
           end
       end
   ```
-- **Besondere Entscheidungen:** _[z. B. Trade-offs, Vereinfachungen]_  
+- **Besondere Entscheidungen:**
+  - **Svelte 5 Runes** project-wide enforced: `captureState` als top-level `$state()` ersetzt Svelte-Stores und persistiert ohne Navigation-Reload über alle 3 Capture-Schritte hinweg.
+  - **Lazy MongoDB-Connect**: Kein expliziter `connect()`-Aufruf nötig — der offizielle Node.js-Treiber verbindet beim ersten Query. Vereinfacht Route-Handler erheblich.
+  - **Leaflet dynamisch importiert** (nur client-side): SSR-kompatibel; Karte wird erst nach `onMount` initialisiert, um Hydration-Fehler zu vermeiden.
+  - **Parallele statische + DB-Artenliste**: `birds.ts` (5 Arten, Legacy) und `species`-Collection (559 Arten) koexistieren. Der Capture-Flow nutzt die MongoDB-Collection; die Legacy-Liste wird nur als Fallback gehalten. Bewusste Vereinfachung, um den Migrations-Aufwand zu begrenzen.
 
 ### 3.5 Validate
 
@@ -306,24 +362,57 @@ Fasst die technische Realisierung zusammen.
 
 ## 4. Erweiterungen [Optional]
 Dokumentiert Erweiterungen über den Mindestumfang hinaus.
-> **Hinweis:** Jede Erweiterung ist separat nach dem folgenden Schema zu beschreiben.
 
-### _[4.x Kurzbeschreibung / Titel]_  
-- **Beschreibung & Nutzen:** _[Was wurde erweitert? Warum?]_  
-- **Wo umgesetzt:** _[Wie und wo wurde es gemacht? Frontend, Backend, Datenbank?]_  
-- **Referenz:** _[Wo wird die Erweiterung auch noch beschrieben, z.B. Screenshot oder Beschreibung in einem anderen Kapitel]_  
-- **Aus Evaluation abgeleitet?:** _[Wurde diese Erweiterung als Folge eines in der Evaluation identifizierten Issues implementiert?]_  
+### 4.1 Authentifizierung (Login & Registrierung)
+- **Beschreibung & Nutzen:** Die App ist vollständig hinter einem Login-Wall geschützt. Nutzer können sich registrieren und einloggen; alle Beobachtungen sind benutzerspezifisch. Ohne Auth wären alle Daten für jeden einsehbar und vermischbar.
+- **Wo umgesetzt:**
+  - **Frontend:** `src/routes/login/+page.svelte` — Login- und Registrierungsformular mit Tab-Umschalter
+  - **Backend:** `src/lib/server/auth.ts` — `createUser`, `getUserByCredentials`, `createSession`, `deleteSession` (bcryptjs, `crypto.randomUUID`)
+  - **Middleware:** `src/hooks.server.ts` — Auth-Guard prüft Session-Cookie bei jedem Request; leitet nicht-authentifizierte Requests auf `/login` um
+  - **Datenbank:** Collections `users` (username, passwordHash) und `sessions` (token, userId, expiresAt 30 Tage)
+- **Referenz:** Beschrieben in Kap. 3.4.2 (Struktur & Daten); Session-Management via Cookie mit 30-Tage-Ablauf
+- **Aus Evaluation abgeleitet?:** Nein — Anforderung von Beginn an (Szenario 0 in der Evaluation)
 
-> Das folgende **Beispiel** wurde bewusst kurz gehalten. Erweiterungen dürfen auch ausführlicher beschrieben werden.
+### 4.2 CSV-Export der Lifelist
+- **Beschreibung & Nutzen:** Nutzer können ihre gesamte Beobachtungsliste als CSV-Datei herunterladen. Enthält Datum, Zeit, Artname, wissenschaftlicher Name, GPS-Koordinaten und Notizen. Entspricht dem expliziten Nutzerwunsch nach Exportfunktionalität (Post-Test-Interview).
+- **Wo umgesetzt:**
+  - **Backend:** `src/routes/api/export/+server.ts` — GET-Endpoint, liest alle Beobachtungen des eingeloggten Users, reichert mit Species-Daten an, gibt RFC-konformes CSV (UTF-8 mit BOM) zurück
+  - **Frontend:** Button in `src/routes/settings/+page.svelte`
+- **Referenz:** In Kap. 3.5 (Validate) als gewünschte Funktion aus dem Post-Test-Interview erwähnt
+- **Aus Evaluation abgeleitet?:** Ja — im Post-Test-Interview explizit als sehr nützlich bewertet
 
-### 4.1 Tabelle nach Kategorien filtern
-- **Beschreibung & Nutzen:** Tabelle X kann nach Kategorie gefiltert werden, weil User typischerweise nur an einer bestimmten Kategorie interessiert sind.  
-- **Wo umgesetzt:** 
-  - **Frontend:** Tabelle mit Dropdown in Datei ...
-  - **Backend:** Form Action ... in Datei ...
-  - **Datenbank:** MongoDB-Query in Datei ...
-- **Referenz:** Screenshot in Kap. x.y
-- **Aus Evaluation abgeleitet?:** Ja, Issue x.y
+### 4.3 Artenübersicht (559 Schweizer Vogelarten)
+- **Beschreibung & Nutzen:** Eine eigene Seite listet alle 559 in der Schweiz vorkommenden Vogelarten aus der MongoDB-Datenbank — durchsuchbar nach deutschem Namen, Lateinnamen und Familie. Nutzer können Arten auch ohne eigene Sichtung entdecken und deren Detailseite aufrufen.
+- **Wo umgesetzt:**
+  - **Frontend:** `src/routes/uebersicht/+page.svelte` — Echtzeit-Suche via Svelte 5 `$derived`, Portrait-Thumbnails aus Wikipedia CDN
+  - **Frontend Detail:** `src/routes/uebersicht/[speciesCode]/+page.svelte` — Art-Detailseite mit Bild, Taxonomie (Ordnung, Familie) und Wikipedia-Beschreibung
+  - **Backend:** `src/routes/uebersicht/+page.server.ts` — lädt alle Species aus MongoDB; `src/routes/uebersicht/[speciesCode]/+page.server.ts` — lädt Einzelart + Wikipedia-Fetch
+  - **Datenbank:** `species`-Collection (559 Einträge, befüllt via Seed-Skript)
+- **Referenz:** Seed-Skript in Kap. 4.5 beschrieben
+- **Aus Evaluation abgeleitet?:** Nein — von Beginn an konzipiert als "Bestimmungshilfe / Wissensdatenbank"
+
+### 4.4 Statistiken in den Einstellungen
+- **Beschreibung & Nutzen:** Die Einstellungsseite zeigt drei Kennzahlen: Gesamtzahl der Beobachtungen, Anzahl eindeutiger Arten und Datum der ersten Sichtung. Adressiert direkt Szenario 5 der Usability-Evaluation ("Wie viele verschiedene Arten habe ich schon gesehen?").
+- **Wo umgesetzt:**
+  - **Backend:** `src/routes/settings/+page.server.ts` — drei parallele MongoDB-Queries (`countDocuments`, `distinct`, `findOne` mit Sort) in `Promise.all`
+  - **Frontend:** `src/routes/settings/+page.svelte` — Stats-Cards
+- **Referenz:** Evaluations-Szenario 5 in Kap. 3.5
+- **Aus Evaluation abgeleitet?:** Szenario direkt aus der Evaluation; Umsetzung war bereits vor der Evaluation geplant
+
+### 4.5 Daten-Seeding aus eBird-API und Wikipedia
+- **Beschreibung & Nutzen:** Zwei Node.js-Skripte bereiten die Datengrundlage für alle 559 Schweizer Vogelarten vor — vollständig automatisiert und idempotent. Ohne diese Skripte wären nur die 5 statischen Dummy-Vögel verfügbar.
+- **Wo umgesetzt:**
+  - `scripts/seed-species.mjs` — ruft die eBird API ab, mappt Felder (speciesCode, name, latinName, Taxonomie), speichert in MongoDB (Drop + Re-Insert, idempotent)
+  - `scripts/enrich-images.mjs` — ergänzt je Art einen Wikipedia-CDN-Thumbnail-URL; überspringt Arten, die bereits ein `image`-Feld haben
+  - Ausführung via `npm run seed:species` und `npm run enrich:images` (erfordern `.env` mit EBIRD_API_KEY)
+- **Referenz:** Kap. 3.4.2 (Daten & Schnittstellen), CLAUDE.md
+- **Aus Evaluation abgeleitet?:** Nein — technische Grundlage für die gesamte App
+
+### 4.6 Self-hosted Deployment mit Docker und Tailscale
+- **Beschreibung & Nutzen:** Die App läuft nicht auf einer Cloud-Plattform, sondern auf einem selbst betriebenen Proxmox-Heimserver mit Docker Compose und Tailscale Funnel als HTTPS-Reverse-Proxy. Kein zusätzlicher Hosting-Kostenpunkt; volle Kontrolle über Infrastruktur und Daten.
+- **Wo umgesetzt:** Docker Compose mit zwei Containern (`lifelist-app` + `lifelist-tailscale` Sidecar, shared network namespace); mehrstufiges Dockerfile (Node 22 Alpine Build + Runtime); Tailscale Funnel übernimmt TLS automatisch
+- **Referenz:** Vollständig beschrieben inkl. Architektur-Diagramm in Kap. 3.4.2 (Deployment)
+- **Aus Evaluation abgeleitet?:** Nein — infrastrukturelle Entscheidung
 
 ## 5. Projektorganisation [Optional]
 Beispiele:
@@ -335,15 +424,33 @@ Beispiele:
 Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im Projekt.
 
 ### 6.1 KI-Tools
-- **Eingesetzte Tools**: _[z. B. Copilot, ChatGPT, Claude, lokale Modelle; Version/Variante wenn bekannt]_
-- **Zweck & Umfang**: _[wie, wofür und in welchem Ausmass wurde KI eingesetzt (z. B. Textentwürfe, Codevorschläge, Tests, Refactoring); welche Teile stammen (ganz/teilweise) aus KI-Unterstützung?]_
-- **Eigene Leistung (Abgrenzung):** _[was ist eigenständig erarbeitet/überarbeitet worden?]_
+- **Eingesetzte Tools:** Claude Code (Anthropic, Modell: Claude Sonnet 4.x) — CLI-basiertes KI-Coding-Tool, das direkt im Terminal innerhalb von VS Code genutzt wurde. Kein weiteres KI-Tool wurde eingesetzt.
+
+- **Zweck & Umfang:**
+
+  | Bereich | KI-Anteil |
+  |---|---|
+  | **Code-Implementierung** | Hoch — Route-Handler, Svelte-Komponenten, Auth-Logik, MongoDB-Queries, CSS; Claude Code generierte grosse Teile des Codes auf Basis von klaren Anforderungen |
+  | **Debugging** | Mittel — Fehlermeldungen wurden mit Claude Code analysiert; Fixes wurden vorgeschlagen und nach Prüfung übernommen |
+  | **Dokumentation (README, USABILITY.md)** | Mittel — Strukturierte Texte (z.B. Kap. 3.5, 3.4.2, Kap. 4) wurden mit KI-Unterstützung verfasst oder ergänzt, basierend auf eigenen Notizen und Beobachtungen |
+  | **Problemanalyse & Personas** | Keine — eigenständig erarbeitet |
+  | **Skizzen & Mockup** | Keine — eigenständig auf Papier und in Figma |
+  | **Usability-Test** | Keine — Planung, Moderation und Auswertung eigenständig durchgeführt |
+  | **Architektur- & Designentscheide** | Keine — Tech-Stack, Routing-Struktur, Deployment-Konzept eigenständig entschieden |
+
+- **Eigene Leistung (Abgrenzung):** Alle methodischen Phasen (Understand/Define, Sketch, Decide, Validate) wurden eigenständig durchgeführt. Die Architektur- und Designentscheide (Mobile-First, MongoDB, Tailscale-Deployment, Svelte 5 Runes) wurden ohne KI getroffen. Der KI-generierte Code wurde stets geprüft, bei Bedarf korrigiert und in die Gesamtstruktur integriert. Die Verantwortung für Korrektheit, Urheberrecht und Gesamtresultat liegt beim Autor.
 
 ### 6.2 Prompt-Vorgehen
-_[Überlegungen zu Prompt-Vorgehen, Qualität und Urheberrecht/Quellen. Wie wurde beim Prompting vorgegangen? Zu beschreiben ist die grundlegende Vorgehensweise. Einzelne, konkrete Prompts sollten höchstens als Beispiele aufgeführt werden. ]_
+Claude Code wurde als interaktiver Pair-Programmer verwendet: Anforderungen wurden in natürlicher Sprache als Aufgabe formuliert (z. B. "Erstelle einen GET-Endpoint, der alle Beobachtungen des eingeloggten Users als CSV zurückgibt"). Die CLAUDE.md-Datei im Repository diente als persistenter Kontext (Datenmodell, Architektur, Konventionen), sodass Claude Code in jeder Sitzung das Projekt-Setup kannte ohne wiederholte Erklärungen.
+
+Typisches Vorgehen: Anforderung formulieren → generierten Code lesen und verstehen → testen → bei Bedarf korrigieren oder nachfragen. Prompts wurden iterativ verfeinert, wenn das erste Ergebnis nicht den Erwartungen entsprach. Keine fertigen Code-Snippets aus Drittquellen übernommen; Wikipedia-Thumbnails und eBird-Daten sind über öffentliche APIs bezogen (Lizenzhinweise: Wikipedia CC-BY-SA, eBird Academic Use).
 
 ### 6.3 Reflexion
-_[Nutzen, Grenzen, Risiken/Qualitätssicherung, ...]_
+**Nutzen:** Claude Code hat die Implementierungsgeschwindigkeit deutlich erhöht, insbesondere bei wiederkehrenden Mustern (MongoDB-Queries, Form Actions, TypeScript-Typen). Das Tool erlaubte es, den Fokus auf Architektur- und Usability-Entscheide zu legen, statt viel Zeit mit Boilerplate zu verbringen.
+
+**Grenzen:** KI-generierter Code muss aktiv gelesen und verstanden werden. Bei komplexen Zusammenhängen (z. B. Svelte 5 Runes + Leaflet SSR-Kompatibilität) waren mehrere Iterationen nötig. Die KI kennt den Gesamtkontext nicht vollständig und schlägt manchmal Lösungen vor, die lokal korrekt, aber architektonisch nicht konsistent sind.
+
+**Qualitätssicherung:** Jeder generierte Code-Block wurde gelesen, verstanden und im Browser oder mit `npm run check` (TypeScript + Svelte type check) validiert. Sicherheitsrelevante Teile (Auth, Session-Handling) wurden besonders sorgfältig geprüft.
 
 ## 7. Anhang [Optional]
 Beispiele:
