@@ -60,9 +60,6 @@ Lifelist füllt die Lücke zwischen "Notizbuch" und "eBird": eine **persönliche
 Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergebnisse je Phase.
 
 ### 3.1 Understand & Define
-- **Zielgruppenverständnis:** _[Problemraumanalyse, Recherche, (Proto-)Personas]_
-- **Wesentliche Erkenntnisse:** _[Stichpunkte]_
-### 3.1 Understand & Define
 
 - **Zielgruppenverständnis:**
 
@@ -249,14 +246,63 @@ Fasst die technische Realisierung zusammen.
 - **Besondere Entscheidungen:** _[z. B. Trade-offs, Vereinfachungen]_  
 
 ### 3.5 Validate
-- **URL der getesteten Version** (separat deployt)
-- **Ziele der Prüfung:** _[welche Fragen sollen beantwortet werden?]_  
-- **Vorgehen:** _[moderiert/unmoderiert; remote/on-site]_  
-- **Stichprobe:** _[Mit wem wurde getestet? Profil; Anzahl]_  
-- **Aufgaben/Szenarien:** _[Ausformulierte Testaufgaben]_  
-- **Kennzahlen & Beobachtungen:** _[z. B. Erfolgsquote, Zeitbedarf, qualitative Findings]_  
-- **Zusammenfassung der Resultate:** _[Wichtigste Erkenntnisse; 2-4 Sätze]_  
-- **Abgeleitete Verbesserungen:** _[Anforderungen, die als nächstes umgesetzt werden sollten, priorisiert, kurz begründet; falls Verbesserungen im Prototyp konkret umgesetzt wurden: In Kap. 4 dokumentieren]_  
+
+- **URL der getesteten Version:** https://lifelist.tail952aaf.ts.net
+
+- **Ziele der Prüfung:** Formative, qualitative Usability-Evaluation zur Identifikation von Usability-Problemen während der Entwicklung. Konkrete Fragestellungen:
+  1. Finden Nutzer intuitiv den Einstieg, um eine neue Vogelbeobachtung zu erfassen?
+  2. Ist die 3-stufige Erfassung (Vogel suchen → Ort/Zeit → Bestätigung) verständlich und effizient?
+  3. Verstehen Nutzer den Unterschied zwischen einem neuen "Lifer" und einer Wiederholungssichtung?
+  4. Können Nutzer ihre Lifelist durchsuchen und eine gespeicherte Beobachtung aufrufen?
+  5. Ist die Karteninteraktion (Marker verschieben / auf Karte tippen) ohne Erklärung verständlich?
+  6. Finden Nutzer die Einstellungen (Standardstandort, Statistiken) selbstständig?
+
+- **Vorgehen:** Moderierter Usability-Test, on-site (während KK). Testpersonen erhielten Aufgaben schriftlich auf einem Laptop-Bildschirm, eine nach der anderen, in Alltagssprache ohne UI-Fachbegriffe. Während der Bearbeitung wurden sie gebeten, laut zu denken. Der Testleiter griff so wenig wie möglich ein. Nach jeder Aufgabe kurze Reflexionsfrage; abschliessend ein Post-Test-Interview mit 6 Fragen.
+
+- **Stichprobe:** 2 Testpersonen; Einsteiger-Vogelbeobachter, Smartphone-affin, repräsentativ für potenzielle neue Nutzer. Tests wurden getrennt durchgeführt.
+
+- **Aufgaben/Szenarien:**
+
+  | # | Szenario | Getesteter Bereich |
+  |---|----------|--------------------|
+  | 0 | Du möchtest die App zum ersten Mal nutzen und brauchst ein Konto. | Login / Registrierung |
+  | 1 | Du hast heute morgen beim Spaziergang einen Buchfink beobachtet. Wie hältst du diese Sichtung in der App fest? | Capture-Flow (alle 3 Schritte) |
+  | 2 | Du möchtest nachschauen, welche Vögel du bisher gesehen hast, und mehr über eine deiner Sichtungen erfahren. | Lifelist + Detailansicht |
+  | 3 | Du stellst fest, dass das Datum deiner letzten Beobachtung nicht stimmt — es war eigentlich gestern. Was machst du? | Beobachtung bearbeiten |
+  | 4 | Du möchtest, dass die App beim Erfassen einer Sichtung automatisch deinen Heimatort als Startpunkt vorschlägt. | Einstellungen → Standardstandort |
+  | 5 | Du willst einem Freund sagen, wie viele verschiedene Vogelarten du schon in deiner Liste hast. Wo findest du das heraus? | Einstellungen → Übersicht / Stats |
+
+- **Kennzahlen & Beobachtungen:**
+
+  | # | Testperson 1 (Alen) | Testperson 2 (Noel) |
+  |---|-------------|---------------------|
+  | 0 | Kleiner Stolperer beim Registrierungsflow (mögliches Layer-8-Problem) | Intuitiv, kein Problem |
+  | 1 | Intuitive Eingabe; keine Probleme mit Karte oder Zeitangabe | Intuitive Erfassung, keine Probleme |
+  | 2 | Erster Klick auf das App-Logo (gleicher Name wie Menüpunkt → Verwirrung) | Intuitiv, keine Probleme |
+  | 3 | Datum-Anpassung problemlos | Intuitiv, keine Probleme |
+  | 4 | Fragestellung wurde als unklar empfunden; Einstellung selbst wurde intuitiv gefunden → Hinweis: Icon für Standort-Pin auf der Karte fehlt | Intuitiv, keine Probleme |
+  | 5 | Doppelte Einträge bei Beobachtung derselben Art aufgefallen | Intuitiv, keine Probleme |
+
+  **Post-Test-Interview (zusammengefasst):**
+  - Design als ansprechend und modern bewertet; "Vogel des Tages" und Detailansicht positiv hervorgehoben
+  - Erfassungsflow als einfach eingestuft (Skala 1–5: **5 / 5** bei beiden Testpersonen)
+  - Übersichtlichkeit der Lifelist: Skala 1–5: **5 / 5**; Wunsch nach Filterfunktion bei grösserer Liste
+  - Uhrzeit-Feld wurde nach Datumsbearbeitung als unintuitiv wahrgenommen (Speicherstatus unklar)
+  - Gewünschte Zusatzfunktionen: Vogelrufe in der Detailansicht, automatische Vogelerkennung per Foto
+  - CSV-Export und Standardstandort-Funktion wurden als sehr nützlich bewertet
+
+- **Zusammenfassung der Resultate:** Beide Testpersonen absolvierten alle Szenarien erfolgreich und bewerteten Erfassung sowie Übersichtlichkeit mit der Höchstnote. Die App ist für Einsteiger intuitiv bedienbar; der Capture-Flow und die Lifelist-Navigation funktionierten ohne Erklärung. Drei Usability-Probleme wurden identifiziert: (1) Logo und Lifelist-Menüpunkt tragen denselben Namen und erzeugen Verwirrung, (2) das Icon für den Standort-Pin auf der Karte fehlt, (3) doppelte Einträge bei mehrfacher Sichtung derselben Art sind unklar kommuniziert.
+
+- **Abgeleitete Verbesserungen** (priorisiert):
+
+  | Priorität | Problem / Wunsch | Begründung |
+  |-----------|-----------------|------------|
+  | Hoch | Logo von Lifelist-Menüpunkt visuell unterscheiden | Führt zu falschem Klickpfad bei Navigation zur Lifelist |
+  | Hoch | Icon für Standort-Pin auf der Karte ergänzen | Fehlende Affordance – Nutzer erkennt die Interaktionsmöglichkeit nicht sofort |
+  | Mittel | Doppelte Einträge gleicher Art in der Lifelist zusammenfassen oder klar kennzeichnen | Erzeugt Verwirrung, ob eine Mehrfachsichtung korrekt gespeichert ist |
+  | Mittel | Uhrzeit-Feld nach Datumsbearbeitung klar als gespeichert signalisieren | Unsicherheit über Speicherstatus beeinträchtigt Vertrauen |
+  | Tief | Filterfunktion für die Lifelist | Relevant erst bei grösserer Datenmenge; positiv erwähnt, aber kein akutes Problem |
+  | Tief (Feature) | Vogelrufe in der Detailansicht | Nutzerwunsch; ausserhalb des definierten Scope des Prototyps |
 
 ## 4. Erweiterungen [Optional]
 Dokumentiert Erweiterungen über den Mindestumfang hinaus.
