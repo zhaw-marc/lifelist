@@ -360,7 +360,7 @@ Fasst die technische Realisierung zusammen.
   | Tief | Filterfunktion für die Lifelist | Relevant erst bei grösserer Datenmenge; positiv erwähnt, aber kein akutes Problem |
   | Tief (Feature) | Vogelrufe in der Detailansicht | Nutzerwunsch; ausserhalb des definierten Scope des Prototyps |
 
-## 4. Erweiterungen [Optional]
+## 4. Erweiterungen
 Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 
 ### 4.1 Authentifizierung (Login & Registrierung)
@@ -381,8 +381,8 @@ Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 - **Referenz:** In Kap. 3.5 (Validate) als gewünschte Funktion aus dem Post-Test-Interview erwähnt
 - **Aus Evaluation abgeleitet?:** Ja — im Post-Test-Interview explizit als sehr nützlich bewertet
 
-### 4.3 Artenübersicht (559 Schweizer Vogelarten)
-- **Beschreibung & Nutzen:** Eine eigene Seite listet alle 559 in der Schweiz vorkommenden Vogelarten aus der MongoDB-Datenbank — durchsuchbar nach deutschem Namen, Lateinnamen und Familie. Nutzer können Arten auch ohne eigene Sichtung entdecken und deren Detailseite aufrufen.
+### 4.3 Artenübersicht (500+ Europäische Vogelarten)
+- **Beschreibung & Nutzen:** Eine eigene Seite listet 559 in der Schweiz und über die Grenzen hinaus vorkommenden Vogelarten aus der MongoDB-Datenbank — durchsuchbar nach deutschem Namen, Lateinnamen und Familie. Nutzer können Arten auch ohne eigene Sichtung entdecken und deren Detailseite aufrufen.
 - **Wo umgesetzt:**
   - **Frontend:** `src/routes/uebersicht/+page.svelte` — Echtzeit-Suche via Svelte 5 `$derived`, Portrait-Thumbnails aus Wikipedia CDN
   - **Frontend Detail:** `src/routes/uebersicht/[speciesCode]/+page.svelte` — Art-Detailseite mit Bild, Taxonomie (Ordnung, Familie) und Wikipedia-Beschreibung
@@ -400,7 +400,7 @@ Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 - **Aus Evaluation abgeleitet?:** Szenario direkt aus der Evaluation; Umsetzung war bereits vor der Evaluation geplant
 
 ### 4.5 Daten-Seeding aus eBird-API und Wikipedia
-- **Beschreibung & Nutzen:** Zwei Node.js-Skripte bereiten die Datengrundlage für alle 559 Schweizer Vogelarten vor — vollständig automatisiert und idempotent. Ohne diese Skripte wären nur die 5 statischen Dummy-Vögel verfügbar.
+- **Beschreibung & Nutzen:** Zwei Node.js-Skripte bereiten die Datengrundlage für alle 500+ Vogelarten vor — vollständig automatisiert und idempotent. Ohne diese Skripte wären nur die 5 statischen Dummy-Vögel verfügbar.
 - **Wo umgesetzt:**
   - `scripts/seed-species.mjs` — ruft die eBird API ab, mappt Felder (speciesCode, name, latinName, Taxonomie), speichert in MongoDB (Drop + Re-Insert, idempotent)
   - `scripts/enrich-images.mjs` — ergänzt je Art einen Wikipedia-CDN-Thumbnail-URL; überspringt Arten, die bereits ein `image`-Feld haben
@@ -414,11 +414,10 @@ Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 - **Referenz:** Vollständig beschrieben inkl. Architektur-Diagramm in Kap. 3.4.2 (Deployment)
 - **Aus Evaluation abgeleitet?:** Nein — infrastrukturelle Entscheidung
 
-## 5. Projektorganisation [Optional]
-Beispiele:
-- **Repository & Struktur:** _[Link; kurze Strukturübersicht]_  
-- **Issue-Management:** _[Vorgehen kurz beschreiben]_  
-- **Commit-Praxis:** _[z. B. sprechende Commits]_
+## 5. Projektorganisation
+- **Repository & Struktur:** https://github.com/zhaw-marc/lifelist, Struktur siehe Kap. 3.4.2
+- **Issue-Management:** Die Issues wurden jeweils für spezifische Features / Bugs / Documentations erstellt und auf Github gemanaged. Issues enthalten Definition of Done (Dod)
+- **Commit-Praxis:** Sprechende Commits, meist mit Prefix für die jeweiligen Changes und inkl Auto-Close von Issues
 
 ## 6. KI-Deklaration
 Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im Projekt.
@@ -430,7 +429,7 @@ Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im 
 
   | Bereich | KI-Anteil |
   |---|---|
-  | **Code-Implementierung** | Hoch — Route-Handler, Svelte-Komponenten, Auth-Logik, MongoDB-Queries, CSS; Claude Code generierte grosse Teile des Codes auf Basis von klaren Anforderungen |
+  | **Code-Implementierung** | Hoch — Route-Handler, Svelte-Komponenten, Auth-Logik, MongoDB-Queries, CSS; Claude Code generierte grosse Teile des Codes auf Basis von klaren Anforderungen. Claude Code wurde für die Entwicklung eingesetzt, allerdings wurde die Struktur und das Vorgehen manuell geplant und geprompted, sodass Claude Code keine Designentscheidungen im Code autonom traff. |
   | **Debugging** | Mittel — Fehlermeldungen wurden mit Claude Code analysiert; Fixes wurden vorgeschlagen und nach Prüfung übernommen |
   | **Dokumentation (README, USABILITY.md)** | Mittel — Strukturierte Texte (z.B. Kap. 3.5, 3.4.2, Kap. 4) wurden mit KI-Unterstützung verfasst oder ergänzt, basierend auf eigenen Notizen und Beobachtungen |
   | **Problemanalyse & Personas** | Keine — eigenständig erarbeitet |
@@ -438,7 +437,7 @@ Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im 
   | **Usability-Test** | Keine — Planung, Moderation und Auswertung eigenständig durchgeführt |
   | **Architektur- & Designentscheide** | Keine — Tech-Stack, Routing-Struktur, Deployment-Konzept eigenständig entschieden |
 
-- **Eigene Leistung (Abgrenzung):** Alle methodischen Phasen (Understand/Define, Sketch, Decide, Validate) wurden eigenständig durchgeführt. Die Architektur- und Designentscheide (Mobile-First, MongoDB, Tailscale-Deployment, Svelte 5 Runes) wurden ohne KI getroffen. Der KI-generierte Code wurde stets geprüft, bei Bedarf korrigiert und in die Gesamtstruktur integriert. Die Verantwortung für Korrektheit, Urheberrecht und Gesamtresultat liegt beim Autor.
+- **Eigene Leistung (Abgrenzung):** Alle methodischen Phasen (Understand/Define, Sketch, Decide, Validate) wurden eigenständig durchgeführt. Die Architektur- und Designentscheide (Mobile-First, MongoDB, Tailscale-Deployment, Svelte 5 Runes) wurden ohne KI getroffen. Der KI-generierte Code wurde stets geprüft, bei Bedarf korrigiert und in die Gesamtstruktur integriert. Die Verantwortung für Korrektheit, Urheberrecht und Gesamtresultat liegt bei mir.
 
 ### 6.2 Prompt-Vorgehen
 Claude Code wurde als interaktiver Pair-Programmer verwendet: Anforderungen wurden in natürlicher Sprache als Aufgabe formuliert (z. B. "Erstelle einen GET-Endpoint, der alle Beobachtungen des eingeloggten Users als CSV zurückgibt"). Die CLAUDE.md-Datei im Repository diente als persistenter Kontext (Datenmodell, Architektur, Konventionen), sodass Claude Code in jeder Sitzung das Projekt-Setup kannte ohne wiederholte Erklärungen.
@@ -448,7 +447,7 @@ Typisches Vorgehen: Anforderung formulieren → generierten Code lesen und verst
 ### 6.3 Reflexion
 **Nutzen:** Claude Code hat die Implementierungsgeschwindigkeit deutlich erhöht, insbesondere bei wiederkehrenden Mustern (MongoDB-Queries, Form Actions, TypeScript-Typen). Das Tool erlaubte es, den Fokus auf Architektur- und Usability-Entscheide zu legen, statt viel Zeit mit Boilerplate zu verbringen.
 
-**Grenzen:** KI-generierter Code muss aktiv gelesen und verstanden werden. Bei komplexen Zusammenhängen (z. B. Svelte 5 Runes + Leaflet SSR-Kompatibilität) waren mehrere Iterationen nötig. Die KI kennt den Gesamtkontext nicht vollständig und schlägt manchmal Lösungen vor, die lokal korrekt, aber architektonisch nicht konsistent sind.
+**Grenzen:** KI-generierter Code muss aktiv gelesen und verstanden werden. Bei komplexen Zusammenhängen (z. B. Svelte 5 Runes + Leaflet SSR-Kompatibilität) waren mehrere Iterationen nötig. Die KI kennt den Gesamtkontext nicht vollständig und schlägt manchmal Lösungen vor, die lokal korrekt, aber architektonisch nicht konsistent sind. Claude Code stiess teilweise an die Grenzen mit dem Kontext, daher wurde
 
 **Qualitätssicherung:** Jeder generierte Code-Block wurde gelesen, verstanden und im Browser oder mit `npm run check` (TypeScript + Svelte type check) validiert. Sicherheitsrelevante Teile (Auth, Session-Handling) wurden besonders sorgfältig geprüft.
 
