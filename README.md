@@ -264,7 +264,9 @@ Fasst die technische Realisierung zusammen.
     - `sessions` — Session-Token mit Ablaufdatum (30 Tage)
   - **Wikipedia REST API** (`de.wikipedia.org/api/rest_v1/page/summary/{latinName}`) — server-side, 5s Timeout, silent fail
   - **eBird API** — nur einmalig beim Seeden (`scripts/seed-species.mjs`), nicht zur Laufzeit
-- **Deployment:** Die App ist öffentlich erreichbar unter **https://lifelist.tail952aaf.ts.net**
+- **Deployment:** Die App ist in zwei Instanzen öffentlich erreichbar:
+  - **Prototype (getestete Version):** https://lifelist.tail952aaf.ts.net
+  - **Produktiv (mit Fixes nach Evaluation):** https://lifelist-prod.tail952aaf.ts.net
 
   Die Infrastruktur läuft auf einem selbst gehosteten Proxmox-Server (Heimserver). Darauf betreibt eine Ubuntu-VM einen Docker-Host. Die Anwendung besteht aus zwei Docker-Containern, die via `docker compose` verwaltet werden:
 
@@ -359,6 +361,15 @@ Fasst die technische Realisierung zusammen.
   | Mittel | Uhrzeit-Feld nach Datumsbearbeitung klar als gespeichert signalisieren | Unsicherheit über Speicherstatus beeinträchtigt Vertrauen |
   | Tief | Filterfunktion für die Lifelist | Relevant erst bei grösserer Datenmenge; positiv erwähnt, aber kein akutes Problem |
   | Tief (Feature) | Vogelrufe in der Detailansicht | Nutzerwunsch; ausserhalb des definierten Scope des Prototyps |
+
+- **Umgesetzte Fixes (nach Evaluation):**
+
+  | Problem | Fix | Wo |
+  |---------|-----|----|
+  | Icon für Standort-Pin auf der Karte fehlte | Leaflet-Standardmarker (kaputte PNG-Pfade im Build) ersetzt durch custom SVG-`divIcon` (blauer Tropfen-Pin) | `src/routes/capture/+page.svelte`, `src/routes/lifelist/[id]/+page.svelte` |
+  | Doppelte Einträge gleicher Art in der Lifelist | Server-seitige Deduplizierung nach `birdId`: pro Art wird nur die älteste Beobachtung (Erstnachweis) angezeigt | `src/routes/lifelist/+page.server.ts` |
+
+- **URL des produktiven Deployments (mit Fixes):** https://lifelist-prod.tail952aaf.ts.net
 
 ## 4. Erweiterungen
 Dokumentiert Erweiterungen über den Mindestumfang hinaus.
