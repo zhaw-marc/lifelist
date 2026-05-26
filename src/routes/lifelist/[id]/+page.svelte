@@ -31,7 +31,19 @@
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '© OpenStreetMap'
 		}).addTo(map);
-		marker = L.marker([location.lat, location.lng], { draggable: true }).addTo(map);
+
+		const pinIcon = L.divIcon({
+			className: '',
+			html: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
+				<path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24s16-14 16-24C32 7.163 24.837 0 16 0z" fill="#2563eb"/>
+				<circle cx="16" cy="16" r="7" fill="white"/>
+			</svg>`,
+			iconSize: [32, 40],
+			iconAnchor: [16, 40],
+			popupAnchor: [0, -40]
+		});
+
+		marker = L.marker([location.lat, location.lng], { draggable: true, icon: pinIcon }).addTo(map);
 		marker.on('dragend', () => {
 			const pos = marker.getLatLng();
 			location = { lat: pos.lat, lng: pos.lng };
