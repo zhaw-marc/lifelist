@@ -5,10 +5,20 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const userId = new ObjectId(locals.user!.id);
-	const obs = await observations
+	const allObs = await observations
 		.find({ userId })
-		.sort({ date: -1, time: -1 })
+		.sort({ date: 1, time: 1 })
 		.toArray();
+
+	// Keep only the first (earliest) sighting per species
+	const seen = new Set<string>();
+	const obs = allObs
+		.filter((o) => {
+			if (seen.has(o.birdId)) return false;
+			seen.add(o.birdId);
+			return true;
+		})
+		.reverse();
 
 	const birdIds = [...new Set(obs.map((o) => o.birdId))];
 
