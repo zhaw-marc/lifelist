@@ -1,8 +1,10 @@
+name: lifelist-prod
+
 services:
   tailscale:
     image: tailscale/tailscale:latest
-    container_name: lifelist-tailscale
-    hostname: lifelist
+    container_name: lifelist-prod-tailscale
+    hostname: lifelist-prod
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
@@ -19,7 +21,7 @@ services:
 
   app:
     build: .
-    container_name: lifelist-app
+    container_name: lifelist-prod-app
     network_mode: "service:tailscale"
     environment:
       - MONGODB_URI=${MONGODB_URI}
