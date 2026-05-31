@@ -171,13 +171,24 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
 
 - **Gewählte Variante & Begründung:** Hybrid aus Sketch-Varianten 7 + 8: Übersichtsseite mit Vogel-Portrait-Karten und integrierter Karte. Entscheidkriterien: intuitive Interaktion, Beginner-freundlichkeit, klare Seitenbeschreibung, positive Nutzung der Karte.
 
-- **End-to-End-Ablauf:**
+- **End-to-End-Ablauf:** Die App deckt drei Workflows ab. Workflow 1 ist der zentrale Happy Path: Nutzer öffnen die App, suchen eine Vogelart, ergänzen Ort und Datum auf der Karte und speichern die Sichtung — bei einer Erstsichtung erscheint der "Neuer Lifer!"-Screen. Workflow 2 erlaubt das nachträgliche Anzeigen, Bearbeiten und Löschen von Sichtungen über die Lifelist. Workflow 3 beschreibt die Navigation zwischen den drei Hauptbereichen über die fixe Bottom Navigation.
 
   ![Workflow 1 – Neue Beobachtung erfassen](docs/assets/sketches/mockup_p1.png)
   *Workflow 1 (Happy Path): Home → Neue Beobachtung → Art wählen → Metadaten (Ort, Datum, Foto) → Speichern → "Neuer Lifer!" oder Bestätigung → Life List.*
 
   ![Workflow 2 & 3 – Sichtung bearbeiten und Navigation](docs/assets/sketches/mockup_p2.png)
   *Workflow 2: Life List → Art-Detail → Swipen zwischen Sichtungen / Bearbeiten → Formular → Speichern. Workflow 3: Bottom Navigation zwischen Erfassen, Life List und Einstellungen.*
+
+- **User Journey Map** *(Persona: Lena — Workflow 1: Neue Beobachtung erfassen)*
+
+  | Phase | 1 · Impuls | 2 · App öffnen | 3 · Art suchen | 4 · Details erfassen | 5 · Speichern |
+  |---|---|---|---|---|---|
+  | **Aktion** | Lena sieht beim Spazieren einen unbekannten Vogel | Öffnet Lifelist, loggt sich ein (Session aktiv → direkt auf Home) | Tippt auf „Beobachtung erfassen", sucht „Buchfink" im Suchfeld | Bestätigt Standort auf der Karte, prüft Datum | Tippt „Beobachtung speichern" |
+  | **Gedanken** | „Den kenne ich nicht – den will ich festhalten, bevor er wegfliegt!" | „Hoffentlich geht das schnell." | „Gut, dass ich deutsch suchen kann – den Lateinnamen kenne ich nicht." | „Die Karte hat meinen Standort schon – passt." | „Einfacher als erwartet." |
+  | **Emotion** | Aufgeregt, leicht gestresst (Vogel könnte verschwinden) | Neutral, leichte Ungeduld | Erleichtert (Treffer erscheint sofort) | Zufrieden | Freude (Neuer Lifer!-Screen) |
+  | **Touchpoint** | — (Auslöser: Naturerlebnis) | Login-Screen / Home | Capture-Flow Schritt 1 (Suche) | Capture-Flow Schritt 2 (Karte + Formular) | Capture-Flow Schritt 3 (Bestätigung) |
+  | **Schmerzpunkt** | Zeitdruck: Vogel ist schnell weg | Loginpflicht kostet Sekunden | Kein Treffer bei englischem Namen | Karte lädt kurz → leichte Verzögerung | — |
+  | **Chance** | Mobile-First + schneller Capture reduziert Abbrüche | Session bleibt 30 Tage aktiv → kein Re-Login nötig | Suche zeigt deutschen + wissenschaftlichen Namen | GPS-Vorausfüllung und Heimstandort-Fallback minimieren Aufwand | „Neuer Lifer!"-Screen erzeugt Erfolgserlebnis und Wiederkehrmotivation |
 
 - **Mockup:** [Figma-Prototyp (interaktiv)](https://www.figma.com/proto/ABKnLl17kd1sW1dbhDw0aM/U10?node-id=0-1&t=PigQqPpqyoBD0PGR-1)
 
@@ -202,7 +213,7 @@ Beschreibt die Gestaltung und Interaktion.
   | **"Vogel des Tages" auf Homescreen** | Informativer Charakter; motiviert App-Öffnung auch ohne Erfassungsanlass |
   | **Art-Auswahl mit Suchfeld + Autocomplete** | 559 Arten – reines Dropdown nicht praktikabel; zeigt deutschen + wissenschaftlichen Namen |
   | **Swipe-Navigation für Sichtungen derselben Art** | Vermeidet Listen-in-Listen; fühlt sich auf Mobile natürlich an |
-  | **"Neuer Lifer!"-Screen** | Erzeugt Erfolgserlebnis bei Ertstsichtung (Pokédex-Logik / Sammler-Motivation) |
+  | **"Neuer Lifer!"-Screen** | Erzeugt Erfolgserlebnis bei Erstsichtung (Pokédex-Logik / Sammler-Motivation) |
   | **Minimale Pflichtfelder** | Nur Artauswahl zwingend; Datum wird vorausgefüllt; Ort/Foto optional → unter 30 Sek. |
   | **Bearbeitungsformular = Erfassungsformular** | Kein neues UI-Pattern zu lernen; vorausgefüllte Felder statt leeres Formular |
 
@@ -460,6 +471,18 @@ Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 - **Referenz:** Vollständig beschrieben inkl. Architektur-Diagramm in Kap. 3.4.2 (Deployment)
 - **Aus Evaluation abgeleitet?:** Nein — infrastrukturelle Entscheidung
 
+### 4.7 Fix: SVG-Pin-Icon auf der Karte (aus Evaluation)
+- **Beschreibung & Nutzen:** Der Leaflet-Standardmarker war im Production-Build nicht sichtbar (kaputte PNG-Pfad-Auflösung). Testperson 1 erkannte dadurch die Karteninteraktion nicht sofort. Ersetzt durch ein custom SVG-`divIcon` (blauer Tropfen-Pin), das framework-unabhängig und garantiert sichtbar ist.
+- **Wo umgesetzt:** `src/routes/capture/+page.svelte` (Capture-Flow), `src/routes/lifelist/[id]/+page.svelte` (Sichtungs-Detail) — jeweils in der Leaflet-Init-Funktion
+- **Referenz:** Identifiziert in Kap. 3.5 (Evaluation, Aufgabe 4); Fix dokumentiert in Tabelle "Umgesetzte Fixes"
+- **Aus Evaluation abgeleitet?:** Ja — Testperson 1, Szenario 4 (fehlende Affordance für Karteninteraktion)
+
+### 4.8 Fix: Deduplizierung gleicher Art in der Lifelist (aus Evaluation)
+- **Beschreibung & Nutzen:** Mehrfache Sichtungen derselben Art erschienen als separate Einträge in der Lifelist, was Testperson 1 verwirrte ("Habe ich das doppelt erfasst?"). Die Lifelist zeigt nun pro Art nur den ältesten Eintrag (Erstnachweis / "Lifer"), was dem Konzept einer Life List entspricht.
+- **Wo umgesetzt:** `src/routes/lifelist/+page.server.ts` — server-seitige Deduplizierung via MongoDB-Aggregation nach `birdId`
+- **Referenz:** Identifiziert in Kap. 3.5 (Evaluation, Aufgabe 5); Fix dokumentiert in Tabelle "Umgesetzte Fixes"
+- **Aus Evaluation abgeleitet?:** Ja — Testperson 1, Szenario 5 (doppelte Einträge erzeugen Verwirrung)
+
 ## 5. Projektorganisation
 - **Repository & Struktur:** https://github.com/zhaw-marc/lifelist, Struktur siehe Kap. 3.4.2
 - **Issue-Management:** Die Issues wurden jeweils für spezifische Features / Bugs / Documentations erstellt und auf Github gemanaged. Issues enthalten Definition of Done (Dod)
@@ -469,7 +492,7 @@ Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im Projekt.
 
 ### 6.1 KI-Tools
-- **Eingesetzte Tools:** Claude Code — CLI-basiertes KI-Coding-Tool, das direkt im Terminal innerhalb von VS Code genutzt wurde. Weiter wurde Gemini CLI verwendet.
+- **Eingesetzte Tools:** Claude Code (Anthropic, Modell: Claude Sonnet 4.6) — CLI-basiertes KI-Coding-Tool, das direkt im Terminal innerhalb von VS Code genutzt wurde. Weiter wurde Gemini CLI (Google, Modell: Gemini 2.5 Pro) verwendet.
 
 - **Zweck & Umfang:**
 
@@ -478,10 +501,11 @@ Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im 
   | **Code-Implementierung** | Hoch — Route-Handler, Svelte-Komponenten, Auth-Logik, MongoDB-Queries, CSS; Claude Code generierte grosse Teile des Codes auf Basis von klaren Anforderungen. Claude Code wurde für die Entwicklung eingesetzt, allerdings wurde die Struktur und das Vorgehen manuell geplant und geprompted, sodass Claude Code keine Designentscheidungen im Code autonom traff. |
   | **Debugging** | Mittel — Fehlermeldungen wurden mit Claude Code analysiert; Fixes wurden vorgeschlagen und nach Prüfung übernommen |
   | **Dokumentation (README, USABILITY.md)** | Mittel — Strukturierte Texte (z.B. Kap. 3.5, 3.4.2, Kap. 4) wurden mit KI-Unterstützung verfasst oder ergänzt, basierend auf eigenen Notizen und Beobachtungen |
-  | **Problemanalyse & Personas** | Keine — eigenständig erarbeitet |
+  | **Problemanalyse & Personas** | Gering — Persona-Portraits mit Gemini generiert; Analyse, Inhalte und Formulierungen eigenständig |
   | **Skizzen & Mockup** | Keine — eigenständig auf Papier und in Figma |
   | **Usability-Test** | Keine — Planung, Moderation und Auswertung eigenständig durchgeführt |
   | **Architektur- & Designentscheide** | Keine — Tech-Stack, Routing-Struktur, Deployment-Konzept eigenständig entschieden |
+  | **Code-Review & Testing (Gemini CLI)** | Gering — Gemini CLI als zweites Modell zur Prüfung von generiertem Code eingesetzt |
 
 - **Eigene Leistung (Abgrenzung):** Alle methodischen Phasen (Understand/Define, Sketch, Decide, Validate) wurden eigenständig durchgeführt. Die Architektur- und Designentscheide (Mobile-First, MongoDB, Tailscale-Deployment, Svelte 5 Runes) wurden ohne KI getroffen. Der KI-generierte Code wurde stets geprüft, bei Bedarf korrigiert und in die Gesamtstruktur integriert. Die Verantwortung für Korrektheit, Urheberrecht und Gesamtresultat liegt bei mir.
 
