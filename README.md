@@ -499,7 +499,7 @@ Typisches Vorgehen: Anforderung formulieren → generierten Code lesen und verst
 
 **Qualitätssicherung:** Jeder generierte Code-Block wurde gelesen, verstanden und im Browser oder mit `npm run check` (TypeScript + Svelte type check) validiert. Sicherheitsrelevante Teile (Auth, Session-Handling) wurden besonders sorgfältig geprüft. Zudem wurde mit Gemini CLI ein zweites Modell zur Prüfung des Codes verwendet.
 
-## 7. Anhang [Optional]
+## 7. Anhang
 
 ### 7.1 Quellen & Lizenzen
 
