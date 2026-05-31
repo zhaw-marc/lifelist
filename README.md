@@ -206,6 +206,41 @@ Beschreibt die Gestaltung und Interaktion.
   | **Minimale Pflichtfelder** | Nur Artauswahl zwingend; Datum wird vorausgefüllt; Ort/Foto optional → unter 30 Sek. |
   | **Bearbeitungsformular = Erfassungsformular** | Kein neues UI-Pattern zu lernen; vorausgefüllte Felder statt leeres Formular |
 
+- **Screenshots der fertigen App:**
+
+  **Login & Home**
+  <table><tr>
+  <td><img src="docs/assets/screenshots/Login.png" width="200" alt="Login-Screen"><br><em>Login / Registrierung</em></td>
+  <td><img src="docs/assets/screenshots/Home.png" width="200" alt="Home-Screen"><br><em>Home – Vogel des Tages</em></td>
+  </tr></table>
+
+  **Workflow 1 – Beobachtung erfassen**
+  <table><tr>
+  <td><img src="docs/assets/screenshots/Beobachtung1.png" width="200" alt="Capture Schritt 1"><br><em>Schritt 1 – Vogelsuche</em></td>
+  <td><img src="docs/assets/screenshots/Beobachtung2.png" width="200" alt="Capture Schritt 2"><br><em>Schritt 2 – Ort & Datum</em></td>
+  <td><img src="docs/assets/screenshots/Beobachtung3.png" width="200" alt="Capture Schritt 3"><br><em>Schritt 3 – Bestätigung</em></td>
+  <td><img src="docs/assets/screenshots/NewLifer.png" width="200" alt="Neuer Lifer"><br><em>„Neuer Lifer!"-Screen</em></td>
+  </tr></table>
+
+  **Workflow 2 – Lifelist & Sichtungs-Detail**
+  <table><tr>
+  <td><img src="docs/assets/screenshots/Lifelist.png" width="200" alt="Lifelist Übersicht"><br><em>Lifelist – Übersicht</em></td>
+  <td><img src="docs/assets/screenshots/Lifelist2.png" width="200" alt="Lifelist Detail"><br><em>Sichtungs-Detail</em></td>
+  <td><img src="docs/assets/screenshots/Lifelist3.png" width="200" alt="Lifelist Bearbeiten"><br><em>Beobachtung bearbeiten</em></td>
+  </tr></table>
+
+  **Workflow 3 – Einstellungen & Export**
+  <table><tr>
+  <td><img src="docs/assets/screenshots/Einstellungen1.png" width="200" alt="Einstellungen"><br><em>Einstellungen – Stats & Profil</em></td>
+  <td><img src="docs/assets/screenshots/Einstellungen2.png" width="200" alt="Einstellungen Standort"><br><em>Standardstandort</em></td>
+  <td><img src="docs/assets/screenshots/CSV.png" width="200" alt="CSV Export"><br><em>CSV-Export</em></td>
+  </tr></table>
+
+  **Erweiterung – Artenübersicht**
+  <table><tr>
+  <td><img src="docs/assets/screenshots/Uebersicht1.png" width="200" alt="Artenübersicht"><br><em>Übersicht – 559 europäischer Vogelarten</em></td>
+  </tr></table>
+
 #### 3.4.2. Umsetzung (Technik)
 Fasst die technische Realisierung zusammen.
 
@@ -434,7 +469,7 @@ Dokumentiert Erweiterungen über den Mindestumfang hinaus.
 Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im Projekt.
 
 ### 6.1 KI-Tools
-- **Eingesetzte Tools:** Claude Code (Anthropic, Modell: Claude Sonnet 4.x) — CLI-basiertes KI-Coding-Tool, das direkt im Terminal innerhalb von VS Code genutzt wurde. Kein weiteres KI-Tool wurde eingesetzt.
+- **Eingesetzte Tools:** Claude Code — CLI-basiertes KI-Coding-Tool, das direkt im Terminal innerhalb von VS Code genutzt wurde. Weiter wurde Gemini CLI verwendet.
 
 - **Zweck & Umfang:**
 
@@ -453,18 +488,42 @@ Die folgende Deklaration ist verpflichtend und beschreibt den Einsatz von KI im 
 ### 6.2 Prompt-Vorgehen
 Claude Code wurde als interaktiver Pair-Programmer verwendet: Anforderungen wurden in natürlicher Sprache als Aufgabe formuliert (z. B. "Erstelle einen GET-Endpoint, der alle Beobachtungen des eingeloggten Users als CSV zurückgibt"). Die CLAUDE.md-Datei im Repository diente als persistenter Kontext (Datenmodell, Architektur, Konventionen), sodass Claude Code in jeder Sitzung das Projekt-Setup kannte ohne wiederholte Erklärungen.
 
+Gemini CLI wurde als Prüfer und für das Testing verwendet.
+
 Typisches Vorgehen: Anforderung formulieren → generierten Code lesen und verstehen → testen → bei Bedarf korrigieren oder nachfragen. Prompts wurden iterativ verfeinert, wenn das erste Ergebnis nicht den Erwartungen entsprach. Keine fertigen Code-Snippets aus Drittquellen übernommen; Wikipedia-Thumbnails und eBird-Daten sind über öffentliche APIs bezogen (Lizenzhinweise: Wikipedia CC-BY-SA, eBird Academic Use).
 
 ### 6.3 Reflexion
 **Nutzen:** Claude Code hat die Implementierungsgeschwindigkeit deutlich erhöht, insbesondere bei wiederkehrenden Mustern (MongoDB-Queries, Form Actions, TypeScript-Typen). Das Tool erlaubte es, den Fokus auf Architektur- und Usability-Entscheide zu legen, statt viel Zeit mit Boilerplate zu verbringen.
 
-**Grenzen:** KI-generierter Code muss aktiv gelesen und verstanden werden. Bei komplexen Zusammenhängen (z. B. Svelte 5 Runes + Leaflet SSR-Kompatibilität) waren mehrere Iterationen nötig. Die KI kennt den Gesamtkontext nicht vollständig und schlägt manchmal Lösungen vor, die lokal korrekt, aber architektonisch nicht konsistent sind. Claude Code stiess teilweise an die Grenzen mit dem Kontext, daher wurde
+**Grenzen:** KI-generierter Code muss aktiv gelesen und verstanden werden. Bei komplexen Zusammenhängen (z. B. Svelte 5 Runes + Leaflet SSR-Kompatibilität) waren mehrere Iterationen nötig. Die KI kennt den Gesamtkontext nicht vollständig und schlägt manchmal Lösungen vor, die lokal korrekt, aber architektonisch nicht konsistent sind.
 
-**Qualitätssicherung:** Jeder generierte Code-Block wurde gelesen, verstanden und im Browser oder mit `npm run check` (TypeScript + Svelte type check) validiert. Sicherheitsrelevante Teile (Auth, Session-Handling) wurden besonders sorgfältig geprüft.
+**Qualitätssicherung:** Jeder generierte Code-Block wurde gelesen, verstanden und im Browser oder mit `npm run check` (TypeScript + Svelte type check) validiert. Sicherheitsrelevante Teile (Auth, Session-Handling) wurden besonders sorgfältig geprüft. Zudem wurde mit Gemini CLI ein zweites Modell zur Prüfung des Codes verwendet.
 
 ## 7. Anhang [Optional]
-Beispiele:
-- **Quellen:** _[verwendete Vorlagen/Assets/Modelle; Lizenz/Urheberrecht; ...]_
-- **Testskript & Materialien:** _[Link/Datei]_  
-- **Rohdaten/Auswertung:** _[Link/Datei]_  
+
+### 7.1 Quellen & Lizenzen
+
+| Ressource | Verwendung | Lizenz / Bedingungen |
+|---|---|---|
+| [eBird API](https://documenter.getpostman.com/view/664302/S1ENwy59) (Cornell Lab of Ornithology) | Seeden der 559 Schweizer Vogelarten (`scripts/seed-species.mjs`): speciesCode, deutscher Name, Lateinname, Taxonomie | [eBird Data Use Policy](https://www.birds.cornell.edu/home/ebird-data-use-policy/) — Academic/non-commercial use |
+| [Wikipedia REST API](https://www.mediawiki.org/wiki/API:REST_API) (`de.wikipedia.org`) | Vogelbeschreibungen (extract) und Bild-Thumbnails server-seitig abgerufen | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) — Namensnennung + Weitergabe unter gleichen Bedingungen |
+| [Wikimedia Commons](https://commons.wikimedia.org/) | Vogelbilder via Wikipedia-Thumbnail-URLs (`scripts/enrich-images.mjs`) | Mehrheitlich CC BY-SA oder CC BY; Lizenz je Bild variiert |
+| [OpenStreetMap](https://www.openstreetmap.org/) | Karten-Tiles in der Leaflet-Karte (Capture-Flow, Sichtungs-Detail) | [ODbL 1.0](https://opendatacommons.org/licenses/odbl/) — © OpenStreetMap contributors |
+| [Leaflet](https://leafletjs.com/) | Open-Source-Kartenbibliothek (interaktive Karte, Marker, Click-Events) | [BSD 2-Clause](https://github.com/Leaflet/leaflet/blob/main/LICENSE) |
+| [SvelteKit](https://kit.svelte.dev/) / [Svelte 5](https://svelte.dev/) | Web-Framework (Routing, SSR, Form Actions, Runes) | [MIT](https://github.com/sveltejs/svelte/blob/main/LICENSE.md) |
+| [bcryptjs](https://github.com/dcodeIO/bcrypt.js) | Passwort-Hashing für die Benutzerverwaltung | [MIT](https://github.com/dcodeIO/bcrypt.js/blob/master/LICENSE) |
+| [Nunito](https://fonts.google.com/specimen/Nunito) (Google Fonts) | Schriftart der Applikation | [SIL Open Font License 1.1](https://scripts.sil.org/OFL) |
+| [Figma](https://www.figma.com/) | Erstellung des Referenz-Mockups und des interaktiven Prototyps (Kap. 3.3) | Proprietär (Figma Free Plan) |
+| Persona-Portraits (`docs/assets/`) | KI-generierte Portraits für Proto-Personas (Lena, Markus, Sarah) | Generiert mit Gemini — keine Drittrechte |
+
+### 7.2 Testskript & Materialien
+
+- **Evaluationsplanung & Szenarien:** [`USABILITY.md`](USABILITY.md) — enthält Fragestellungen, Szenarien, Testaufbau und Rohnotizen aus den Tests
+- **Getestete Version (Prototyp):** https://lifelist.tail952aaf.ts.net
+- **Produktive Version (mit Fixes nach Evaluation):** https://lifelist-prod.tail952aaf.ts.net
+
+### 7.3 Rohdaten & Auswertung
+
+- Beobachtungsnotizen und Post-Test-Interview-Antworten: dokumentiert in Kap. 3.5 (Validate) sowie in [`USABILITY.md`](USABILITY.md)
+- Abgeleitete Verbesserungen und umgesetzte Fixes: Kap. 3.5, Tabellen "Verbesserungen" und "Umgesetzte Fixes"
 
