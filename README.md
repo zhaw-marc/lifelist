@@ -192,6 +192,15 @@ Die Durchführung erfolgt phasenbasiert; dokumentieren Sie die wichtigsten Ergeb
 
 - **Mockup:** [Figma-Prototyp (interaktiv)](https://www.figma.com/proto/ABKnLl17kd1sW1dbhDw0aM/U10?node-id=0-1&t=PigQqPpqyoBD0PGR-1)
 
+  <table><tr>
+  <td><img src="docs/assets/screenshots/figma/1.png" width="160" alt="Figma Home"><br><em>Home – Vogel des Tages mit Erfassungs-CTA</em></td>
+  <td><img src="docs/assets/screenshots/figma/2.png" width="160" alt="Figma Artauswahl"><br><em>Neue Beobachtung – Artauswahl mit Suchfeld</em></td>
+  <td><img src="docs/assets/screenshots/figma/3.png" width="160" alt="Figma Karte"><br><em>Neue Beobachtung – Ort & Datum auf der Karte</em></td>
+  <td><img src="docs/assets/screenshots/figma/4.png" width="160" alt="Figma Neuer Lifer"><br><em>Neuer Lifer!-Screen nach Erstsichtung</em></td>
+  <td><img src="docs/assets/screenshots/figma/5.png" width="160" alt="Figma Lifelist"><br><em>Lifelist – Übersicht aller Sichtungen</em></td>
+  <td><img src="docs/assets/screenshots/figma/6.png" width="160" alt="Figma Detail"><br><em>Sichtungs-Detail mit Bearbeitungsmöglichkeit</em></td>
+  </tr></table>
+
 ### 3.4 Prototype
 
 #### 3.4.1. Entwurf (Design)
